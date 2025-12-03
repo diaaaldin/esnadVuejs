@@ -1,0 +1,46 @@
+{
+  "name": "esnadVuejs",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@aspnet/signalr": "^1.0.27",
+    "@ckeditor/ckeditor5-vue": "^3.0.0",
+    "@latelier/vue-signalr": "^1.1.9",
+    "@photo-sphere-viewer/core": "^5.11.5",
+    "@pqina/pintura": "^8.82.18",
+    "@pqina/vue-pintura": "^9.0.1",
+    "axios": "^1.4.0",
+    "cropperjs": "^1.5.13",
+    "date-fns": "^3.6.0",
+    "element-plus": "^2.3.12",
+    "feather-icons": "^4.29.2",
+    "filepond": "^4.31.4",
+    "filepond-plugin-file-poster": "^2.5.1",
+    "filepond-plugin-file-validate-type": "^1.2.9",
+    "filepond-plugin-image-crop": "^2.0.6",
+    "filepond-plugin-image-edit": "^1.6.3",
+    "filepond-plugin-image-preview": "^4.6.12",
+    "fslightbox-vue": "^2.1.3",
+    "html2pdf.js": "^0.12.1",
+    "lightgallery": "^2.7.2",
+    "mosha-vue-toastify": "^1.0.23",
+    "owl.carousel": "^2.3.4",
+    "sweetalert2": "^11.6.13",
+    "vue": "^3.3.4",
+    "vue-axios": "^3.5.2",
+    "vue-filepond": "^7.0.4",
+    "vue-i18n": "^11.0.1",
+    "vue-router": "^4.4.3",
+    "vuex": "^4.0.2",
+    "vuex-persistedstate": "^4.1.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.2.3",
+    "vite": "^4.5.14"
+  }
+}
