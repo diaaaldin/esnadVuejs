@@ -10,11 +10,10 @@ export const socialUrlData = {
 
 
 export const Urls = {
-   cpSite: 'https://localhost:44350',
-  //  cpSite : 'https://cp.markabatistore.com',
+  //cpSite: 'https://localhost:44350',
+    cpSite : 'https://cp.esnad.cloud',
   //cpSite : 'http://localhost:4000',
 };
-
 
 
 export const ParentEnum = {
@@ -46,9 +45,10 @@ export const UserTypeEnum = {
 };
 
 export const CurrenceEnum = {
-  NIS: 86,
-  USD: 87,
-  JOD: 88,
+  NIS: 42,
+  USD: 43,
+  JOD: 44,
+  EUR: 45,
 };
 
 export const AnnouncementTypeEnum = {

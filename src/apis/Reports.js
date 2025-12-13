@@ -5,12 +5,7 @@ const END_POINT = 'Report';
 export default {
 
     GetGeneralReport(data) {
-        let token = localStorage.getItem("token")
-            ? JSON.parse(localStorage.getItem("token"))
-            : null;
-
         let config = {
-            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
             params: {
                 duration: data.duration || 0
             }
@@ -20,12 +15,7 @@ export default {
     },
 
     GetFundersReport(data) {
-        let token = localStorage.getItem("token")
-            ? JSON.parse(localStorage.getItem("token"))
-            : null;
-
         let config = {
-            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
             params: {
                 funderId: data.funderId || 0,
                 projectId: data.projectId || 0
@@ -36,15 +26,9 @@ export default {
     },
 
     GetItemsReport(data) {
-        let token = localStorage.getItem("token")
-            ? JSON.parse(localStorage.getItem("token"))
-            : null;
-
         let config = {
-            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
             params: {
                 projectId: data.projectId || 0,
-                itemId: data.itemId || 0,
                 fromDate: data.fromDate || "",
                 toDate: data.toDate || ""
             }
@@ -54,12 +38,7 @@ export default {
     },
 
     GetDestinationsReport(data) {
-        let token = localStorage.getItem("token")
-            ? JSON.parse(localStorage.getItem("token"))
-            : null;
-
         let config = {
-            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
             params: {
                 destinationId: data.destinationId || 0,
                 fromDate: data.fromDate || "",
@@ -71,12 +50,7 @@ export default {
     },
 
     GetDestinationsBenefitsReport(data) {
-        let token = localStorage.getItem("token")
-            ? JSON.parse(localStorage.getItem("token"))
-            : null;
-
         let config = {
-            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
             params: {
                 projectId: data.projectId || 0,
                 funderId: data.funderId || 0,
@@ -89,12 +63,7 @@ export default {
 
     // Excel export endpoints
     ExportGeneralReport(data) {
-        let token = localStorage.getItem("token")
-            ? JSON.parse(localStorage.getItem("token"))
-            : null;
-
         let config = {
-            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
             params: {
                 duration: data.duration || 0,
                 title: data.title || "التقرير العام"
@@ -106,12 +75,7 @@ export default {
     },
 
     ExportFundersReport(data) {
-        let token = localStorage.getItem("token")
-            ? JSON.parse(localStorage.getItem("token"))
-            : null;
-
         let config = {
-            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
             params: {
                 funderId: data.funderId || 0,
                 projectId: data.projectId || 0,
@@ -124,15 +88,9 @@ export default {
     },
 
     ExportItemsReport(data) {
-        let token = localStorage.getItem("token")
-            ? JSON.parse(localStorage.getItem("token"))
-            : null;
-
-        let config = {
-            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
+            let config = {
             params: {
                 projectId: data.projectId || 0,
-                itemId: data.itemId || 0,
                 fromDate: data.fromDate || "",
                 toDate: data.toDate || "",
                 title: data.title || "تقرير الأصناف"
@@ -144,12 +102,7 @@ export default {
     },
 
     ExportDestinationsReport(data) {
-        let token = localStorage.getItem("token")
-            ? JSON.parse(localStorage.getItem("token"))
-            : null;
-
         let config = {
-            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
             params: {
                 destinationId: data.destinationId || 0,
                 fromDate: data.fromDate || "",
@@ -163,12 +116,7 @@ export default {
     },
 
     ExportDestinationsBenefitsReport(data) {
-        let token = localStorage.getItem("token")
-            ? JSON.parse(localStorage.getItem("token"))
-            : null;
-
         let config = {
-            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
             params: {
                 projectId: data.projectId || 0,
                 funderId: data.funderId || 0,

@@ -1,7 +1,7 @@
 <script>
 import { mapState, mapGetters, mapActions } from "vuex";
 import { ElLoading } from 'element-plus';
-import { ParentEnum, UserTypeEnum } from '@/config/config.js'
+import { ParentEnum, UserTypeEnum, CurrenceEnum } from '@/config/config.js'
 
 export default {
     data() {
@@ -220,10 +220,34 @@ export default {
             this.getDataFunc();
         },
 
-        formatCurrency(value) {
+        formatCurrency(value, currencyId) {
+			// Map currency ID from CurrenceEnum to ISO currency code
+			let currencyCode = "ILS"; // Default to ILS
+			
+			if (currencyId) {
+				const currency = parseInt(currencyId);
+				switch (currency) {
+					case CurrenceEnum.NIS:
+						currencyCode = "ILS";
+						break;
+					case CurrenceEnum.USD:
+						currencyCode = "USD";
+						break;
+					case CurrenceEnum.JOD:
+						currencyCode = "JOD";
+						break;
+					case CurrenceEnum.EUR:
+						currencyCode = "EUR";
+						break;
+					default:
+						currencyCode = "ILS";
+						break;
+				}
+			}
+			
 			return new Intl.NumberFormat('en-US', {
 				style: 'currency',
-				currency: "ILS",
+				currency: currencyCode,
 				// Allows up to 1 decimal digit
 				maximumFractionDigits: 0
 			}).format(value);
@@ -277,7 +301,7 @@ export default {
 
                         </span>
                         <div class="dash-count">
-                            <h5 class="mb-0">{{formatCurrency(wallet.balance || 0) }}</h5>
+                            <h5 class="mb-0">{{formatCurrency(wallet.balance || 0, wallet.currencyId) }}</h5>
                         </div>
                     </div>
                     <div class="dash-widget-info mt-2">
@@ -360,7 +384,7 @@ export default {
                                     </td>
                                     <td class="text-center">{{ item.walletName || '-' }}</td>
                                     <td class="text-center">{{ item.typeName || '-' }}</td>
-                                    <td class="text-center">{{formatCurrency( item.amount || 0) }}</td>
+                                    <td class="text-center">{{formatCurrency(item.amount || 0, item.currencyId) }}</td>
                                     <td class="text-center">{{ item.date ? item.date.split('T')[0] : '-' }}</td>
                                 </tr>
                             </tbody>

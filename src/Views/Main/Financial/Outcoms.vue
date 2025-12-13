@@ -12,10 +12,9 @@ export default {
                 funderCFK: 0,
                 projectCFK: 0,
                 amount: 0,
+                amountNumber: 0,
                 destinationCFK: 0,
                 walletId: 0,
-                itemCFK: 0,
-                itemAmountCFK: 0,
                 peopleCount: 0,
                 photographedByCFK: 0,
                 date: new Date().toISOString().split('T')[0],
@@ -38,6 +37,7 @@ export default {
                 currency: 0,
                 funder: 0,
                 project: 0,
+                destination: 0,
                 fromDate: "",
                 toDate: "",
                 searchText: "",
@@ -58,8 +58,6 @@ export default {
             fundersList: [],
             projectsList: [],
             destinationsList: [],
-            itemsList: [],
-            itemAmountsList: [],
             photographersList: [],
         }
     },
@@ -72,8 +70,6 @@ export default {
         this.loadFunders();
         this.loadProjects();
         this.loadDestinations();
-        this.loadItems();
-        this.loadItemAmounts();
         this.loadPhotographers();
         
         // Set default teamId for non-admin users
@@ -126,14 +122,6 @@ export default {
 
         getDestinationsData() {
             return this.destinationsList || [];
-        },
-
-        getItemsData() {
-            return this.itemsList || [];
-        },
-
-        getItemAmountsData() {
-            return this.itemAmountsList || [];
         },
 
         getPhotographersData() {
@@ -208,6 +196,14 @@ export default {
             }
             return this.getWalletsData.filter(wallet => wallet.teamId === this.dataSearch.teamId);
         },
+
+        hasRunningCost() {
+            // Check if the current outcome has running cost
+            if (this.data.id === 0) return false;
+            const foundItem = this.getOutcomesPagination.data.find(element => element.id === this.data.id);
+            if (!foundItem) return false;
+            return foundItem.runningCostAmount > 0 || (foundItem.runningCostWallet && foundItem.runningCostWallet.trim() !== '');
+        },
     },
     methods: {
         ...mapActions("Outcomes", ["GetAllOutcomes", "CreateOutcome", "UpdateOutcome", "DeleteOutcome", "CreateOutcomesFromExcel"]),
@@ -264,22 +260,6 @@ export default {
                 this.destinationsList = response || [];
             }).catch(error => {
                 console.error("Error loading destinations:", error);
-            });
-        },
-
-        loadItems() {
-            this.GetCodesByParent({ parent1: ParentEnum.Items, parent2: 0 }).then(response => {
-                this.itemsList = response || [];
-            }).catch(error => {
-                console.error("Error loading items:", error);
-            });
-        },
-
-        loadItemAmounts() {
-            this.GetCodesByParent({ parent1: ParentEnum.ItemsMountTypes, parent2: 0 }).then(response => {
-                this.itemAmountsList = response || [];
-            }).catch(error => {
-                console.error("Error loading item amounts:", error);
             });
         },
 
@@ -362,10 +342,9 @@ export default {
             this.data.funderCFK = 0;
             this.data.projectCFK = 0;
             this.data.amount = 0;
+            this.data.amountNumber = 0;
             this.data.destinationCFK = 0;
             this.data.walletId = 0;
-            this.data.itemCFK = 0;
-            this.data.itemAmountCFK = 0;
             this.data.peopleCount = 0;
             this.data.photographedByCFK = 0;
             this.data.date = new Date().toISOString().split('T')[0];
@@ -392,7 +371,20 @@ export default {
                     text: "",
                 });
 
-                this.UpdateOutcome(this.data).then(Response => {
+                // Prepare data for sending to backend
+                const dataToSend = { ...this.data };
+                
+                // Check if runningCost has all default values, set to null if so
+                if (dataToSend.runningCost && 
+                    dataToSend.runningCost.id === 0 && 
+                    dataToSend.runningCost.outcomeId === 0 && 
+                    dataToSend.runningCost.amount === 0 && 
+                    dataToSend.runningCost.walletId === 0 && 
+                    dataToSend.runningCost.note === "") {
+                    dataToSend.runningCost = null;
+                }
+
+                this.UpdateOutcome(dataToSend).then(Response => {
                     console.log(Response);
                     this.$moshaToast(this.$t('general_update_operation_success_message'), {
                         hideProgressBar: 'false',
@@ -588,14 +580,33 @@ export default {
                 this.data.funderCFK = foundItem.funderCFK || 0;
                 this.data.projectCFK = foundItem.projectCFK || 0;
                 this.data.amount = foundItem.amount || 0;
+                this.data.amountNumber = foundItem.amountNumber || 0;
                 this.data.destinationCFK = foundItem.destinationCFK || 0;
                 this.data.walletId = foundItem.walletId || 0;
-                this.data.itemCFK = foundItem.itemCFK || 0;
-                this.data.itemAmountCFK = foundItem.itemAmountCFK || 0;
                 this.data.peopleCount = foundItem.peopleCount || 0;
                 this.data.photographedByCFK = foundItem.photographedByCFK || 0;
                 this.data.date = foundItem.date ? foundItem.date.split('T')[0] : new Date().toISOString().split('T')[0];
                 this.data.note = foundItem.note || "";
+                // Handle running cost - only populate if it exists
+                if (foundItem.runningCostAmount > 0 || (foundItem.runningCostWallet && foundItem.runningCostWallet.trim() !== '')) {
+                    // Outcome has running cost, don't populate runningCost fields
+                    this.data.runningCost = {
+                        id: 0,
+                        outcomeId: 0,
+                        amount: 0,
+                        walletId: 0,
+                        note: "",
+                    };
+                } else {
+                    // Outcome doesn't have running cost, initialize empty
+                    this.data.runningCost = {
+                        id: 0,
+                        outcomeId: 0,
+                        amount: 0,
+                        walletId: 0,
+                        note: "",
+                    };
+                }
                 // Load wallets for the selected team
                 if (this.data.teamId > 0) {
                     this.loadWalletsForModal(this.data.teamId);
@@ -826,6 +837,14 @@ export default {
                             }}</option>
                     </select>
                 </div>
+                <div class="col-12 col-sm-6 col-md-3 mb-2">
+                    <label>المنطقة</label>
+                    <select v-model="dataSearch.destination" class="form-control" @change="searchFunc()">
+                        <option value="0">-- إختر المنطقة --</option>
+                        <option v-for="destination in getDestinationsData" :key="destination.id" :value="destination.id">{{ destination.name
+                            }}</option>
+                    </select>
+                </div>
                 <!-- Filters Row 2 -->
                 <div class="col-12 col-sm-6 col-md-3 mb-2">
                     <label>من تاريخ</label>
@@ -874,8 +893,8 @@ export default {
                                     <th class="text-center">المبلغ</th>
                                     <th class="text-center">الوجهة</th>
                                     <th class="text-center">المحفظة</th>
-                                    <th class="text-center">العنصر</th>
-                                    <th class="text-center">كمية العنصر</th>
+                                    <th class="text-center">وحدة القياس</th>
+                                    <th class="text-center">الكمية</th>
                                     <th class="text-center">عدد الأشخاص</th>
                                     <th class="text-center">المصور</th>
                                     <th class="text-center">التاريخ</th>
@@ -895,8 +914,8 @@ export default {
                                     <td class="text-center">{{ formatCurrency(item.amount) }}</td>
                                     <td class="text-center">{{ item.destination }}</td>
                                     <td class="text-center">{{ item.wallet }}</td>
-                                    <td class="text-center">{{ item.item || '-' }}</td>
-                                    <td class="text-center">{{ item.itemAmount || '-' }}</td>
+                                    <td class="text-center">{{ item.unitMegerment || '-' }}</td>
+                                    <td class="text-center">{{ item.amountNumber || 0 }}</td>
                                     <td class="text-center">{{ item.peopleCount || 0 }}</td>
                                     <td class="text-center">{{ item.photographedBy || '-' }}</td>
                                     <td class="text-center">{{ item.date ? item.date.split('T')[0] : '' }}</td>
@@ -1003,15 +1022,10 @@ export default {
                             </div>
                             <div class="col-12 col-sm-6">
                                 <div class="form-group">
-                                    <label>العنصر</label>
-                                    <select v-model="data.itemCFK" class="form-control">
-                                        <option value="0">-- إختر العنصر --</option>
-                                        <option v-for="item in getItemsData" :key="item.id" :value="item.id">{{
-                                            item.name }}</option>
-                                    </select>
+                                    <label>الكمية</label>
+                                    <input v-model="data.amountNumber" type="number" class="form-control">
                                 </div>
                             </div>
-                           
                             <div class="col-12 col-sm-6">
                                 <div class="form-group">
                                     <label>عدد الأشخاص</label>
@@ -1041,33 +1055,35 @@ export default {
                                 </div>
                             </div>
 
-<!--                               
-							<div class="col-12">
-								<h5 class="form-title"><span>المصاريف التشغيلية</span></h5>
-							</div>
+                            <!-- Running Cost Fields - Only show if outcome doesn't have running cost -->
+                            <template v-if="!hasRunningCost">
+                                <div class="col-12">
+                                    <h5 class="form-title"><span>المصاريف التشغيلية</span></h5>
+                                </div>
 
-                            <div class="col-12 col-sm-6">
-                                <div class="form-group">
-                                    <label>المبلغ</label>
-                                    <input v-model="data.runningCost.amount" type="number" step="0.01" class="form-control">
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>المبلغ</label>
+                                        <input v-model="data.runningCost.amount" type="number" step="0.01" class="form-control">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-12 col-sm-6">
-                                <div class="form-group">
-                                    <label>المحفظة</label>
-                                    <select v-model="data.runningCost.walletId" class="form-control" :disabled="data.teamId === 0">
-                                        <option value="0">-- إختر المحفظة --</option>
-                                        <option v-for="wallet in getFilteredWalletsForModal" :key="wallet.id"
-                                            :value="wallet.id">{{ wallet.name }}</option>
-                                    </select>
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>المحفظة</label>
+                                        <select v-model="data.runningCost.walletId" class="form-control" :disabled="data.teamId === 0">
+                                            <option value="0">-- إختر المحفظة --</option>
+                                            <option v-for="wallet in getFilteredWalletsForModal" :key="wallet.id"
+                                                :value="wallet.id">{{ wallet.name }}</option>
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-12">
-								<div class="form-group">
-									<label>ملاحظات</label>
-									<textarea v-model="data.runningCost.note" type="text" class="form-control" maxlength="255"></textarea>
-								</div>
-							</div> -->
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label>ملاحظات</label>
+                                        <textarea v-model="data.runningCost.note" type="text" class="form-control" maxlength="255"></textarea>
+                                    </div>
+                                </div>
+                            </template>
                          
                         </div>
                         <button v-on:click="UpdateFunc()" class="btn btn-primary btn-block">{{ $t('general_save_button')
@@ -1150,15 +1166,10 @@ export default {
                             </div>
                             <div class="col-12 col-sm-6">
                                 <div class="form-group">
-                                    <label>العنصر</label>
-                                    <select v-model="data.itemCFK" class="form-control">
-                                        <option value="0">-- إختر العنصر --</option>
-                                        <option v-for="item in getItemsData" :key="item.id" :value="item.id">{{
-                                            item.name }}</option>
-                                    </select>
+                                    <label>الكمية</label>
+                                    <input v-model="data.amountNumber" type="number" class="form-control">
                                 </div>
                             </div>
-                            
                             <div class="col-12 col-sm-6">
                                 <div class="form-group">
                                     <label>عدد الأشخاص</label>
@@ -1262,16 +1273,19 @@ export default {
                                 class="form-control">
                             <small class="form-text text-muted">
                                 يجب أن يحتوي الملف على الأعمدة التالية بالترتيب:<br>
-                                1. إسم المشروع <br>
-                                2. جهة التمويل <br>
-                                3. قيمة التمويل <br>
-                                4. المنطقة <br>
-                                5. المحفظة <br>
-                                6. الصنف <br>
-                                7. عدد المستفيدين <br>
-                                8. جهة التوثيق <br>
-                                9. التاريخ <br>
-                                10. الملاحظات
+                                1. التاريخ <br>
+                                2. إسم المشروع <br>
+                                3. الممول <br>
+                                4. المبلغ <br>
+                                5. المنطقة <br>
+                                6. العدد <br>
+                                7. المحفظة <br>
+                                8. عدد الأشخاص <br>
+                                9. المصور <br>
+                                10. الملاحظات <br>
+                                11. مبلغ المصاريف التشغيلية (اختياري) <br>
+                                12. محفظة المصاريف التشغيلية (اختياري) <br>
+                                13. ملاحظات المصاريف التشغيلية (اختياري)
                             </small>
                         </div>
                         <button v-on:click="uploadExcelFunc()" class="btn btn-success btn-block">رفع الملف</button>

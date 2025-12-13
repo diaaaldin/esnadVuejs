@@ -5,12 +5,8 @@ const END_POINT = 'Income';
 export default {
 
     GetAllIncomes(data) {
-        let token = localStorage.getItem("token")
-            ? JSON.parse(localStorage.getItem("token"))
-            : null;
 
         let config = {
-            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
             params: {
                 teamId: data.teamId || 0,
                 walletId: data.walletId || 0,

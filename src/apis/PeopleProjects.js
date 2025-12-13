@@ -5,12 +5,7 @@ const END_POINT = 'PeopleProject';
 export default {
 
     GetPeopleProjectsByProjectId(data) {
-        let token = localStorage.getItem("token")
-            ? JSON.parse(localStorage.getItem("token"))
-            : null;
-
         let config = {
-            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
             params: {
                 projectId: data.projectId || 0,
                 name: data.name || "",

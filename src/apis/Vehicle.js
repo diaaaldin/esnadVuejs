@@ -6,8 +6,12 @@ const END_POINT = 'Vehicle';
 export default {
 
     GetVehicle(id) {
+        let token = localStorage.getItem("token")
+            ? JSON.parse(localStorage.getItem("token"))
+            : null;
 
         let config = {
+            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
             params: {
                 id: id,
             },

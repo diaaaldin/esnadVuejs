@@ -10,6 +10,8 @@ export default {
             data: {
                 id: 0,
                 name: "",
+                childId: 0,
+                childName: "",
                 parent: ParentEnum.Projects,
                 parent2: 0,
                 arrangeNum: 0,
@@ -43,7 +45,7 @@ export default {
 
     },
     methods: {
-        ...mapActions("Code", ["GetCodesByParent", "CreateCode", "UpdateCode", "DeleteCode"]),
+        ...mapActions("Code", ["GetCodesByParentWithChild", "CreateCodeWithChild", "UpdateCodeWithChild", "DeleteCode"]),
 
         	initFunc() {
 			const loading = ElLoading.service({
@@ -52,7 +54,7 @@ export default {
 				text: "",
 			});
 	
-			this.GetCodesByParent({ parent1: ParentEnum.Projects, parent2: 0 }).then(response => {
+			this.GetCodesByParentWithChild({ parent1: ParentEnum.Projects, parent2: 0 }).then(response => {
                 console.log("responce : " ,response);
 				loading.close();
 			}).catch(error => {
@@ -83,6 +85,8 @@ export default {
         clearData() {
             this.data.id = 0;
             this.data.name = "";
+            this.data.childId = 0;
+            this.data.childName = "";
             this.data.parent = ParentEnum.Projects;
             this.data.parent2 = 0;
             this.data.value = 0;
@@ -98,7 +102,7 @@ export default {
                     text: "",
                 });
 
-                this.UpdateCode(this.data).then(Response => {
+                this.UpdateCodeWithChild(this.data).then(Response => {
                     console.log(Response);
                     this.$moshaToast(this.$t('general_update_operation_success_message'), {
                         hideProgressBar: 'false',
@@ -108,7 +112,7 @@ export default {
                         timeout: 3000,
                     });
                     loading.close();
-                    this.GetCodesByParent({ parent1: ParentEnum.Projects, parent2: 0 });
+                    this.GetCodesByParentWithChild({ parent1: ParentEnum.Projects, parent2: 0 });
                     $('#edit_specialities_details').modal('hide');
                 }).catch(error => {
                     if (error.response && error.response.status === 401) {
@@ -199,7 +203,7 @@ export default {
                     text: "",
                 });
 
-                this.CreateCode(this.data).then(Response => {
+                this.CreateCodeWithChild(this.data).then(Response => {
                     console.log(Response);
                     this.$moshaToast(this.$t('general_create_operation_success_message'), {
                         hideProgressBar: 'false',
@@ -209,7 +213,7 @@ export default {
                         timeout: 3000,
                     });
                     loading.close();
-                    this.GetCodesByParent({ parent1: ParentEnum.Projects, parent2: 0 });
+                    this.GetCodesByParentWithChild({ parent1: ParentEnum.Projects, parent2: 0 });
                     $('#add_modal').modal('hide');
                     this.clearData();
                 }).catch(error => {
@@ -244,6 +248,8 @@ export default {
             if (foundItem) {
                 this.data.id = foundItem.id;
                 this.data.name = foundItem.name;
+                this.data.childId = foundItem.childId || 0;
+                this.data.childName = foundItem.childName || "";
                 this.data.parent = foundItem.parent || ParentEnum.Projects;
                 this.data.parent2 = foundItem.parent2 || 0;
                 this.data.value = foundItem.value;
@@ -269,7 +275,7 @@ export default {
                         timeout: 3000,
                     });
                     loading.close();
-                    this.GetCodesByParent({ parent1: ParentEnum.Projects, parent2: 0 });
+                    this.GetCodesByParentWithChild({ parent1: ParentEnum.Projects, parent2: 0 });
                     $('#delete_modal').modal('hide');
                     this.clearData();
                 }).catch(error => {
@@ -349,6 +355,7 @@ export default {
                                 <tr>
                                     <th class="text-center">ID</th>
                                     <th class="text-center">{{ $t('general_table_name_item') }}</th>
+                                    <th class="text-center">وحدة القياس</th>
                                     <!-- <th class="text-center">{{ $t('general_table_value_item') }}</th>
                                     <th class="text-center">{{ $t('general_table_value_st_item') }}</th> -->
                                     <th></th>
@@ -358,6 +365,7 @@ export default {
                                 <tr v-for="(item, index) in getCodesData">
                                     <td class="text-center">{{ index + 1 }}</td>
                                     <td class="text-center">{{ item.name }}</td>
+                                    <td class="text-center">{{ item.childName || '-' }}</td>
                                     <!-- <td class="text-center">{{ item.value }}</td> -->
                                     <!-- <td class="text-center" v-if="isImageValue(item.id)">
                                         <img :src="item.valueSt" class="img-responsive rounded" alt="image" height="80">
@@ -401,6 +409,12 @@ export default {
 								<div class="form-group">
 									<label>{{ $t('general_modal_name_input') }}</label>
 									<input v-model="data.name" type="text" class="form-control">
+								</div>
+							</div>
+                            <div class="col-12 col-sm-12">
+								<div class="form-group">
+									<label>نوع الكمية</label>
+									<input v-model="data.childName" type="text" class="form-control">
 								</div>
 							</div>
                             <!-- <div class="col-12 col-sm-12">
@@ -459,9 +473,14 @@ export default {
                                     <input v-model="data.name" type="text" class="form-control">
                                 </div>
                             </div>
+                            <div class="col-12 col-sm-12">
+                                <div class="form-group">
+                                    <label>نوع الكمية</label>
+                                    <input v-model="data.childName" type="text" class="form-control">
+                                </div>
+                            </div>
                         </div>
-                        <button v-on:click="CreateFunc()" class="btn btn-primary btn-block">{{ $t('general_save_button')
-                            }}</button>
+                        <button v-on:click="CreateFunc()" class="btn btn-primary btn-block">{{ $t('general_save_button')}}</button>
                     </div>
                 </div>
             </div>

@@ -5,12 +5,7 @@ const END_POINT = 'Outcome';
 export default {
 
     GetAllOutcomes(data) {
-        let token = localStorage.getItem("token")
-            ? JSON.parse(localStorage.getItem("token"))
-            : null;
-
         let config = {
-            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
             params: {
                 teamId: data.teamId || 0,
                 walletId: data.walletId || 0,
@@ -18,6 +13,7 @@ export default {
                 currency: data.currency || 0,
                 funder: data.funder || 0,
                 project: data.project || 0,
+                destination: data.destination || 0,
                 fromDate: data.fromDate || "",
                 toDate: data.toDate || "",
                 page: data.page || 1,

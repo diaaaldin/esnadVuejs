@@ -20,7 +20,6 @@ export default {
             itemsReportData: {
                 title: "",
                 projectId: 0,
-                itemId: 0,
                 fromDate: "",
                 toDate: ""
             },
@@ -39,7 +38,6 @@ export default {
             // Dropdown lists
             fundersList: [],
             projectsList: [],
-            itemsList: [],
             destinationsList: [],
             // Active modal
             activeModal: null
@@ -48,7 +46,6 @@ export default {
     mounted() {
         this.loadFunders();
         this.loadProjects();
-        this.loadItems();
         this.loadDestinations();
     },
     computed: {
@@ -80,14 +77,6 @@ export default {
                 this.projectsList = response || [];
             }).catch(error => {
                 console.error("Error loading projects:", error);
-            });
-        },
-
-        loadItems() {
-            this.GetCodesByParent({ parent1: ParentEnum.Items, parent2: 0 }).then(response => {
-                this.itemsList = response || [];
-            }).catch(error => {
-                console.error("Error loading items:", error);
             });
         },
 
@@ -124,7 +113,7 @@ export default {
                     this.fundersReportData = { title: "", funderId: 0, projectId: 0 };
                     break;
                 case 'items':
-                    this.itemsReportData = { title: "", projectId: 0, itemId: 0, fromDate: "", toDate: "" };
+                    this.itemsReportData = { title: "", projectId: 0, fromDate: "", toDate: "" };
                     break;
                 case 'destinations':
                     this.destinationsReportData = { title: "", destinationId: 0, fromDate: "", toDate: "" };
@@ -235,7 +224,6 @@ export default {
                     params = {
                         title: this.itemsReportData.title,
                         projectId: this.itemsReportData.projectId,
-                        itemId: this.itemsReportData.itemId,
                         fromDate: this.itemsReportData.fromDate,
                         toDate: this.itemsReportData.toDate
                     };
@@ -482,13 +470,6 @@ export default {
                         <select v-model.number="itemsReportData.projectId" class="form-control">
                             <option value="0">-- جميع المشاريع --</option>
                             <option v-for="project in projectsList" :key="project.id" :value="project.id">{{ project.name }}</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>الصنف</label>
-                        <select v-model.number="itemsReportData.itemId" class="form-control">
-                            <option value="0">-- جميع الأصناف --</option>
-                            <option v-for="item in itemsList" :key="item.id" :value="item.id">{{ item.name }}</option>
                         </select>
                     </div>
                     <div class="form-group">

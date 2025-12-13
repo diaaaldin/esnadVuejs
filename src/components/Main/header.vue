@@ -81,7 +81,7 @@ export default {
         <!-- Logo -->
         <div class="header-left">
             <router-link to="/" class="logo">
-                <img src="/images/esnad_logo.png" alt="Logo">
+                <img src="/images/esnad_logo_horizental.png" alt="Logo">
             </router-link>
 
             <router-link to="/" class="logo logo-small">
