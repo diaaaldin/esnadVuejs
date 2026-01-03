@@ -10,7 +10,7 @@ export default {
             : null;
 
         let config = {
-            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
+            headers: { 'Authorization': token },
             params: {
                 teamId: data.teamId || 0,
                 name: data.name || "",
@@ -27,7 +27,7 @@ export default {
             : null;
 
         let config = {
-            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
+            headers: { 'Authorization': token },
         };
 
         const responce = Api.post(`${END_POINT}/CreateWallet`, data, config);
@@ -40,7 +40,7 @@ export default {
             : null;
 
         let config = {
-            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
+            headers: { 'Authorization': token },
         };
 
         const responce = Api.put(`${END_POINT}/UpdateWallet`, data, config);
@@ -53,7 +53,7 @@ export default {
             : null;
 
         let config = {
-            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
+            headers: { 'Authorization': token },
             params: {
                 id: id
             }

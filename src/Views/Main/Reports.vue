@@ -288,10 +288,10 @@ export default {
                 loading.close();
                 this.downloadBlobAsFile(response, `${defaultTitle || 'report'}.xlsx`);
                 this.$moshaToast('تم إنشاء التقرير وتحميله بنجاح', {
-                    hideProgressBar: 'false',
+                    hideProgressBar: false,
                     position: 'top-center',
-                    showIcon: 'true',
-                    swipeClose: 'true',
+                    showIcon: true,
+                    swipeClose: true,
                     type: 'success',
                     timeout: 3000,
                 });
@@ -301,10 +301,10 @@ export default {
                 console.error('Error exporting report', error);
                 const message = error.response?.data?.message || 'حدث خطأ أثناء إنشاء التقرير';
                 this.$moshaToast(message, {
-                    hideProgressBar: 'false',
+                    hideProgressBar: false,
                     position: 'top-center',
-                    showIcon: 'true',
-                    swipeClose: 'true',
+                    showIcon: true,
+                    swipeClose: true,
                     type: 'error',
                     timeout: 3000,
                 });

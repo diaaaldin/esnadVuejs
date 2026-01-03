@@ -16,6 +16,7 @@ const userLocale = localStorage.getItem('selectedLanguage') || 'ar';
 
 
 export default createI18n({
+  legacy: false,
   locale: userLocale,
   fallbackLocale: 'ar',
   messages: loadLocaleMessages()

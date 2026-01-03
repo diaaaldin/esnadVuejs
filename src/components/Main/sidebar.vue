@@ -5,10 +5,52 @@ import { UserTypeEnum } from '@/config/config.js'
 export default {
 	data() {
 		return {
+			menuInitialized: false,
+			initTimeout: null
 		}
 	},
 	mounted() {
-
+		this.$nextTick(() => {
+			this.initSidebarMenu();
+		});
+	},
+	updated() {
+		// Reinitialize sidebar menu when component updates (e.g., when v-if conditions change)
+		// Debounce to avoid too many reinitializations
+		if (this.initTimeout) {
+			clearTimeout(this.initTimeout);
+		}
+		this.initTimeout = setTimeout(() => {
+			this.$nextTick(() => {
+				this.initSidebarMenu();
+			});
+		}, 200);
+	},
+	beforeUnmount() {
+		// Clean up event handlers when component is destroyed
+		if (this.initTimeout) {
+			clearTimeout(this.initTimeout);
+		}
+		$('#sidebar-menu').off('click.sidebarMenu');
+		this.menuInitialized = false;
+	},
+	watch: {
+		// Watch for changes in computed properties that affect menu visibility
+		showCodeSection() {
+			this.$nextTick(() => {
+				this.initSidebarMenu();
+			});
+		},
+		showUsersSection() {
+			this.$nextTick(() => {
+				this.initSidebarMenu();
+			});
+		},
+		showFinancialSection() {
+			this.$nextTick(() => {
+				this.initSidebarMenu();
+			});
+		},
 	},
 	components: {
 
@@ -22,9 +64,7 @@ export default {
 
 		// Call the function from the store directly when the component is created
 		//this.ActionGetBrands();
-		console.log("this.getUserInfo?.userType", this.getUserInfo.userType);
-		console.log("UserTypeEnum.Admin", UserTypeEnum.Admin);
-
+		
 	},
 
 	computed: {
@@ -59,7 +99,100 @@ export default {
 		},
 	},
 	methods: {
+		initSidebarMenu() {
+			// Check if menu element exists
+			if (!$('#sidebar-menu').length) {
+				return;
+			}
 
+			// Remove any existing handlers with namespace to prevent duplicates
+			$('#sidebar-menu').off('click.sidebarMenu', 'a');
+			
+			// Wait a bit longer to ensure Vue has finished rendering
+			setTimeout(() => {
+				// Check again if menu still exists (might have been removed)
+				if (!$('#sidebar-menu').length) {
+					return;
+				}
+
+				// Force close all submenus and reset state completely
+				$('#sidebar-menu ul ul').each(function() {
+					$(this).css({
+						'display': 'none',
+						'height': 'auto'
+					});
+				});
+				$('#sidebar-menu a').removeClass('subdrop');
+
+				// Reinitialize Feather icons after DOM updates
+				if (window.feather) {
+					window.feather.replace();
+				}
+
+				// Use event delegation with namespace - attach to #sidebar-menu so it works with dynamically added elements
+				$('#sidebar-menu').on('click.sidebarMenu', 'a', function (e) {
+					const $link = $(this);
+					const $submenu = $link.next('ul');
+					
+					// Only handle dropdown links (those that have a next ul sibling)
+					if ($submenu.length === 0) {
+						return; // Not a dropdown, let it proceed normally
+					}
+					
+					// Stop propagation and prevent default for dropdown links
+					e.preventDefault();
+					e.stopPropagation();
+					e.stopImmediatePropagation();
+					
+					// Prevent multiple clicks during animation
+					if ($link.data('processing') || $submenu.is(':animated')) {
+						return;
+					}
+					
+					// Set processing flag
+					$link.data('processing', true);
+					
+					// Check if submenu is currently visible (more reliable than class check)
+					const isVisible = $submenu.is(':visible') && $link.hasClass('subdrop');
+					
+					if (!isVisible) {
+						// Submenu is closed - OPEN IT
+						// Close all other submenus at the same level first
+						$link.parents('ul').first().find('> li > a.subdrop').each(function() {
+							const $otherLink = $(this);
+							if ($otherLink[0] !== $link[0]) {
+								$otherLink.removeClass('subdrop');
+								$otherLink.next('ul').slideUp(350);
+							}
+						});
+
+						// Open the clicked submenu
+						$submenu.slideDown(350, function() {
+							$link.addClass('subdrop');
+							$link.removeData('processing');
+							
+							// Reinitialize Feather icons after opening
+							if (window.feather) {
+								window.feather.replace();
+							}
+						});
+					} else {
+						// Submenu is open - CLOSE IT
+						$submenu.slideUp(350, function() {
+							$link.removeClass('subdrop');
+							$link.removeData('processing');
+							
+							// Reinitialize Feather icons after closing
+							if (window.feather) {
+								window.feather.replace();
+							}
+						});
+					}
+				});
+
+				this.menuInitialized = true;
+			}, 100);
+		}
 	}
 };
 </script>
@@ -82,7 +215,7 @@ export default {
 					</li>
 
 					<li v-if="showUsersSection">
-						<a href="#" class="subdrop"><i data-feather="users"></i> <span> {{ $t('sidebar_users_siction')
+						<a href="#"><i data-feather="users"></i> <span> {{ $t('sidebar_users_siction')
 						}} </span> <i data-feather="chevron-down" class="menu-arrow"></i></a>
 						<ul style="display: none;">
 							<li v-if="isAdmin"><router-link to="/admins"><span>{{ $t('sidebar_admins')
@@ -96,7 +229,7 @@ export default {
 						</ul>
 					</li>
 					<li v-if="showFinancialSection">
-						<a href="#" class="subdrop"><i data-feather="dollar-sign"></i> <span> {{
+						<a href="#"><i data-feather="dollar-sign"></i> <span> {{
 							$t('sidebar_financial_siction') }} </span> <i data-feather="chevron-down"
 								class="menu-arrow"></i></a>
 						<ul style="display: none;">
@@ -130,7 +263,7 @@ export default {
 							</li> -->
 
 					<li v-if="showCodeSection">
-						<a href="#" class="subdrop"><i data-feather="settings"></i> <span> {{ $t('sidebar_code_siction')
+						<a href="#"><i data-feather="settings"></i> <span> {{ $t('sidebar_code_siction')
 						}} </span> <i data-feather="chevron-down" class="menu-arrow"></i></a>
 						<ul style="display: none;">
 							<li><router-link to="/funders"><span>{{ $t('sidebar_funders') }}</span></router-link></li>
@@ -139,7 +272,7 @@ export default {
 							<li><router-link to="/destinations"><span>{{ $t('sidebar_destinations')
 										}}</span></router-link></li>
 							<li><router-link to="/fundWays"><span>{{ $t('sidebar_fundWays') }}</span></router-link></li>
-							<li><router-link to="/items"><span>{{ $t('sidebar_items') }}</span></router-link></li>
+							<!-- <li><router-link to="/items"><span>{{ $t('sidebar_items') }}</span></router-link></li> -->
 							<li><router-link to="/photographers"><span>{{ $t('sidebar_photographers')
 										}}</span></router-link></li>
 							<li><router-link to="/projects"><span>{{ $t('sidebar_projects') }}</span></router-link></li>

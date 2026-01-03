@@ -51,7 +51,6 @@ export default {
                 const updatedContent = this.editor.getData();
                 this.$emit("update:modelValue", updatedContent);
               });
-              console.log("CKEditor initialized");
             })
             .catch((error) => {
               console.error("CKEditor initialization error:", error);
@@ -66,7 +65,6 @@ export default {
         this.editor.destroy()
           .then(() => {
             this.editor = null;
-            console.log("CKEditor instance destroyed");
           })
           .catch((error) => {
             console.error("Error destroying CKEditor instance:", error);

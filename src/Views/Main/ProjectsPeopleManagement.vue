@@ -182,8 +182,6 @@ export default {
             };
 
             return this.GetPeopleProjectsByProjectId(searchParams).then(response => {
-                // console.log("response : ", response );
-                // console.log("this.getPeopleProjectsPagination : ", this.getPeopleProjectsPagination );
             }).catch(error => {
                 if (error.response && error.response.status === 401) {
                     this.$moshaToast(this.$t('general_user_not_allow_error_message'), {
@@ -231,7 +229,6 @@ export default {
                 });
 
                 this.UpdatePeopleProject(this.data).then(Response => {
-                    console.log(Response);
                     this.$moshaToast(this.$t('general_update_operation_success_message'), {
                         hideProgressBar: 'false',
                         showIcon: 'true',
@@ -343,7 +340,7 @@ export default {
                 });
 
                 this.CreatePeopleProject(this.data).then(Response => {
-                    console.log(Response);
+                     
                     this.$moshaToast(this.$t('general_create_operation_success_message'), {
                         hideProgressBar: 'false',
                         showIcon: 'true',
@@ -401,7 +398,7 @@ export default {
                 });
 
                 this.DeletePeopleProject(this.data.id).then(Response => {
-                    console.log(Response);
+                     
                     this.$moshaToast(this.$t('general_delete_operation_success_message'), {
                         hideProgressBar: 'false',
                         showIcon: 'true',

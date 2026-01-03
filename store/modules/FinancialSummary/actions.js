@@ -5,12 +5,11 @@ export const GetFinancialSummary = ({ commit, dispatch }, data) => {
         // API response structure: { pagination: { currentPage, pageCount, pageSize, rowCount }, data: [], sortable: {}, filterable: {} }
         const responseData = response.data.data || {};
         const summaryData = responseData.items || responseData;
-        console.log("summaryData : ", summaryData);
         
         const paginationInfo = summaryData.pagination || {};
         const summaryList = summaryData.data || [];
         
-        commit('SET_FINANCIAL_SUMMARY_DATA', summaryList);
+        commit('SET_FINANCIAL_SUMMARY_DATA', responseData);
         commit('SET_FINANCIAL_SUMMARY_PAGINATION', {
             data: summaryList,
             totalItems: paginationInfo.rowCount || 0,

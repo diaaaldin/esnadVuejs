@@ -10,8 +10,8 @@ export const socialUrlData = {
 
 
 export const Urls = {
-  //cpSite: 'https://localhost:44350',
-    cpSite : 'https://cp.esnad.cloud',
+  // cpSite: 'https://localhost:44350',
+  cpSite : 'https://cp.esnad.cloud',
   //cpSite : 'http://localhost:4000',
 };
 

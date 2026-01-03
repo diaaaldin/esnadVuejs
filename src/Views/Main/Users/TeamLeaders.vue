@@ -87,7 +87,6 @@ export default {
 			this.GetTeams({ name: "" });
 			this.GetTeamLeaders(this.dataSearch).then(Response => {
 				loading.close();
-				console.log("data : ", this.getTeamLeadersData);
 			}).catch(error => {
 				if (error.response && error.response.status === 401) {
 					this.$moshaToast(this.$t('general_user_not_allow_error_message'), {
@@ -149,9 +148,9 @@ export default {
 					background: 'rgba(0, 0, 0, 0.7)',
 					text: "",
 				});
-				// console.log("this.data : ", this.data);
+				//  
 				this.CreateTeamLeader(this.data).then(Response => {
-					console.log(Response);
+					 
 					this.$moshaToast('تم عملية الإضافة بنجاح', {
 						hideProgressBar: 'false',
 						showIcon: 'true',
@@ -396,7 +395,7 @@ export default {
 				});
 
 				this.DeleteTeamLeader(this.data.id).then(Response => {
-					console.log(Response);
+					 
 					this.$moshaToast('تمت عملية الحذف بنجاح', {
 						hideProgressBar: 'false',
 						showIcon: 'true',
@@ -520,7 +519,7 @@ export default {
 		async selectItem(id) {
 			this.clearData();
 			const foundItem = this.getTeamLeadersData.find(element => element.id === id);
-			console.log("foundItem :", foundItem);
+			 
 			if (foundItem) {
 				this.data.id = foundItem.id;
 				this.data.name = foundItem.name;
@@ -540,7 +539,6 @@ export default {
 		// 		this.rolePermissionData.userId = selectedUser.id;
 		// 		// this.rolePermissionData.permissions = selectedUser.permissions;
 		// 	}
-		// 	// console.log("selectedUser : " , selectedUser);
 		// 	this.updateCheckedPermissions = selectedUser.permissions;
 		// 	// You can also update other states (e.g., indeterminate state) if needed
 		// 	this.updateIndeterminateStatesForAll();

@@ -33,7 +33,7 @@ export default {
             : null;
 
         let config = {
-            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
+            headers: { 'Authorization': token },
         };
 
         const responce = Api.post(`${END_POINT}/CreateOutcome`, data, config);
@@ -46,7 +46,7 @@ export default {
             : null;
 
         let config = {
-            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
+            headers: { 'Authorization': token },
         };
 
         const responce = Api.put(`${END_POINT}/UpdateOutcome`, data, config);
@@ -59,13 +59,30 @@ export default {
             : null;
 
         let config = {
-            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
+            headers: { 'Authorization': token },
             params: {
                 id: id
             }
         };
 
         const responce = Api.delete(`${END_POINT}/DeleteOutcome`, config);
+        return responce;
+    },
+
+    DeleteMultiOutcome(ids) {
+        let token = localStorage.getItem("token")
+            ? JSON.parse(localStorage.getItem("token"))
+            : null;
+
+        let config = {
+            headers: { 
+                'Authorization': token,
+                'Content-Type': 'application/json'
+            },
+            data: ids  // Send array directly in request body
+        };
+
+        const responce = Api.delete(`${END_POINT}/DeleteMultiOutcome`, config);
         return responce;
     },
 
@@ -79,9 +96,8 @@ export default {
 
         let config = {
             headers: { 
-                'Authorization': token, 
-                "Access-Control-Allow-Origin": "*",
-                'Content-Type': 'multipart/form-data'
+                'Authorization': token
+                ,'Content-Type': 'multipart/form-data'
             },
         };
 

@@ -1,5 +1,3 @@
-//import * as Vue from "vue"
-import { createApp } from 'vue';
 import getters from "./getters";
 import actions from "./actions";
 import mutations from "./mutations";
@@ -21,14 +19,11 @@ import Projects from "./modules/Projects/index";
 import People from "./modules/People/index";
 import PeopleProjects from "./modules/PeopleProjects/index";
 import Reports from "./modules/Reports/index";
-import Vuex from "vuex";
+import { createStore } from "vuex";
 import createPersistedState from 'vuex-persistedstate';
 import callHubPlugin from './CullHubPlugin.js';
 
-const app = createApp();
-app.use(Vuex);
-
-const store = new Vuex.Store({
+const store = createStore({
     state:{
         isLogged : false,
     },

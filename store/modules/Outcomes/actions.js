@@ -5,7 +5,6 @@ export const GetAllOutcomes = ({ commit, dispatch }, data) => {
         // API response structure: { pagination: { currentPage, pageCount, pageSize, rowCount }, data: [], sortable: {}, filterable: {} }
         const responseData = response.data.data || {};
         const outcomesData = responseData.outcomes || responseData;
-        console.log("outcomesData : ", outcomesData);
         
         const paginationInfo = outcomesData.pagination || {};
         const outcomesList = outcomesData.data || [];
@@ -56,6 +55,14 @@ export const UpdateOutcome = ({ commit, dispatch }, data) => {
 
 export const DeleteOutcome = ({ commit, dispatch }, id) => {
     return Outcome.DeleteOutcome(id).then(function (response) {
+        return response.data.data;
+    }).catch(function (error) {
+        throw error;
+    });
+}
+
+export const DeleteMultiOutcome = ({ commit, dispatch }, ids) => {
+    return Outcome.DeleteMultiOutcome(ids).then(function (response) {
         return response.data.data;
     }).catch(function (error) {
         throw error;

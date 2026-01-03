@@ -5,7 +5,6 @@ export const GetAllPeople = ({ commit, dispatch }, data) => {
         // API response structure: { data: { people: { pagination: {...}, data: [...] } } }
         const responseData = response.data.data || {};
         const peopleData = responseData.people || responseData;
-        console.log("peopleData : ", peopleData);
         
         const paginationInfo = peopleData.pagination || {};
         const peopleList = peopleData.data || [];

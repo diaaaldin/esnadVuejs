@@ -5,14 +5,12 @@ const callHubPlugin = store => {
     // callHub.start(); // Start the SignalR connection
     // // First Listener
     // callHub.client.on("ClientsNotificationCall", data => {
-    //      console.log("ClientsNotificationCall data : ", data);
     //     // Ensure data is an array
     //     if (!Array.isArray(data)) {
     //         console.error("Data is not an array");
     //         return;
     //     }
     //     let id = localStorage.getItem("id");
-    //     //console.log("id : ", id);
     //     // Check if id is null or undefined
     //     if (id === null || id === undefined) {
     //         // console.error("ID is null or undefined");
@@ -22,7 +20,6 @@ const callHubPlugin = store => {
     //     id = parseInt(id, 10);
     //     // Find the item with the matching userId
     //     const foundItem = data.find(element => element.userId === id);
-    //     //console.log("foundItem : ", foundItem);
     //     if (foundItem) {
     //         store.commit('NotificationsAndMessages/SET_USER_NOTIFICATIONS_DATA', foundItem);
     //     } else {
@@ -32,7 +29,6 @@ const callHubPlugin = store => {
 
     // Second Listener
     // callHub.client.on("AdminsNotificationCall", data => {
-    //     console.log("AdminsNotificationCall data  :", data);
 
     //     let isAdmin = localStorage.getItem("isAdmin");
     //     if (isAdmin) {

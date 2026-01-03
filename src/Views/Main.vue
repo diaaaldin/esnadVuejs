@@ -7,9 +7,9 @@ import Header from '@/components/Main/header.vue';
 export default {
     data() {
         return {
-            dataNotification : {
-                page : 1,
-                pageSize : 1000
+            dataNotification: {
+                page: 1,
+                pageSize: 1000
             }
         }
     },
@@ -24,7 +24,7 @@ export default {
         this.initPageContentHeight();
         this.initMobileMenuOverlay();
         this.initSidebarSlimScroll();
-        
+
         // Initialize sidebar toggle after Feather icons are replaced
         this.$nextTick(() => {
             // Wait a bit more to ensure Feather icons are replaced
@@ -37,7 +37,7 @@ export default {
     async created() {
         await this.chickValidationToken();
         this.initFunc();
-        
+
     },
 
     computed: {
@@ -47,7 +47,7 @@ export default {
     methods: {
         // ...mapActions("NotificationsAndMessages", ["GetUserNotifications"]),
 
-        initFunc(){
+        initFunc() {
             // if(this.isTokenValid()){
             //     this.GetUserNotifications(this.dataNotification);
             // }
@@ -55,41 +55,103 @@ export default {
 
         chickValidationToken() {
             if (!this.isTokenValid()) {
-                console.log("token not valid");
                 this.$router.push({ name: 'login' });
             }
         },
 
-        isTokenValid() {
-            const token = localStorage.getItem('token');
-            if (!token) return false;
+        // isTokenValid() {
+        //     try {
+        //         const token = localStorage.getItem('token');
+        //         if (!token) return false;
 
-            const payload = JSON.parse(atob(token.split('.')[1]));
-            return payload.exp > Math.floor(Date.now() / 1000);
+        //         const parts = token.split('.');
+        //         if (parts.length !== 3) return false;
+
+        //         const payload = JSON.parse(atob(parts[1]));
+        //         if (!payload || !payload.exp) return false;
+
+        //         return payload.exp > Math.floor(Date.now() / 1000);
+        //     } catch (error) {
+        //         console.error('Token validation error:', error);
+        //         return false;
+        //     }
+        // },
+        isTokenValid() {
+            try {
+                let token = localStorage.getItem('token');
+                if (!token) return false;
+
+                // Remove Bearer prefix
+                if (token.startsWith('Bearer ')) {
+                    token = token.slice(7);
+                }
+
+                const parts = token.split('.');
+                if (parts.length !== 3) return false;
+
+                // Base64URL → Base64
+                let base64 = parts[1]
+                    .replace(/-/g, '+')
+                    .replace(/_/g, '/');
+
+                // Add padding
+                while (base64.length % 4) {
+                    base64 += '=';
+                }
+
+                const payload = JSON.parse(
+                    decodeURIComponent(
+                        atob(base64)
+                            .split('')
+                            .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+                            .join('')
+                    )
+                );
+
+                if (!payload.exp) return false;
+
+                return payload.exp > Math.floor(Date.now() / 1000);
+            } catch (e) {
+                console.error('Token validation error:', e);
+                return false;
+            }
         },
 
         initSidebarMenu() {
+            // Remove any existing handlers to prevent duplicates
+            $('#sidebar-menu').off('click', 'a.subdrop, a:has(+ ul)');
+
             // Initially close all submenus
             $('#sidebar-menu ul ul').slideUp(0); // Ensure all submenus are collapsed
             $('#sidebar-menu a').removeClass('subdrop'); // Remove the 'subdrop' class from all links
 
-            // Event listener for when a menu item is clicked
-            $('#sidebar-menu a').on('click', function (e) {
-                if ($(this).parent().hasClass('submenu')) {
+            // Use event delegation - attach to #sidebar-menu so it works with dynamically added elements
+            $('#sidebar-menu').on('click', 'a', function (e) {
+                const $link = $(this);
+                const $parent = $link.parent();
+
+                // Only handle dropdown links (those that have a next ul sibling)
+                if ($link.next('ul').length === 0) {
+                    return; // Not a dropdown, let it proceed normally
+                }
+
+                // Prevent default for dropdown links
+                if ($parent.hasClass('submenu') || $link.hasClass('subdrop') || $link.next('ul').length > 0) {
                     e.preventDefault();
                 }
-                if (!$(this).hasClass('subdrop')) {
-                    // Close all other submenus
-                    $('ul', $(this).parents('ul:first')).slideUp(350);
-                    $('a', $(this).parents('ul:first')).removeClass('subdrop');
+
+                if (!$link.hasClass('subdrop')) {
+                    // Close all other submenus at the same level
+                    $('ul', $link.parents('ul:first')).slideUp(350);
+                    $('a', $link.parents('ul:first')).removeClass('subdrop');
 
                     // Open the clicked submenu
-                    $(this).next('ul').slideDown(350);
-                    $(this).addClass('subdrop');
-                } else if ($(this).hasClass('subdrop')) {
+                    $link.next('ul').slideDown(350);
+                    $link.addClass('subdrop');
+                } else if ($link.hasClass('subdrop')) {
                     // Close the clicked submenu
-                    $(this).removeClass('subdrop');
-                    $(this).next('ul').slideUp(350);
+                    $link.removeClass('subdrop');
+                    $link.next('ul').slideUp(350);
                 }
             });
 
@@ -156,12 +218,12 @@ export default {
         initSmallSidebar() {
             // Remove any existing handlers to prevent duplicates
             $(document).off("click", "#toggle_btn");
-            
+
             // Set up click handler with event delegation
             $(document).on("click", "#toggle_btn", (e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                
+
                 if ($("body").hasClass("mini-sidebar")) {
                     $("body").removeClass("mini-sidebar");
                     $(".subdrop + ul").slideDown();
@@ -197,7 +259,7 @@ export default {
 <template>
     <div class="main-wrapper">
         <Header></Header>
-        <Sidebar ></Sidebar>
+        <Sidebar></Sidebar>
         <div class="page-wrapper">
             <div class="content container-fluid">
                 <router-view />

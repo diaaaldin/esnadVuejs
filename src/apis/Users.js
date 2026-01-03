@@ -7,7 +7,6 @@ const END_POINT = 'User';
 export default {
 
     UserLogin(data) {
-        console.log(data);
         return Api.post(`${END_POINT}/UserLogin`, data);
     },
 
@@ -17,7 +16,7 @@ export default {
             : null;
 
         let config = {
-            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
+            headers: { 'Authorization': token },
         };
         return Api.get(`${END_POINT}/GetUser`, config);
     },
@@ -28,7 +27,7 @@ export default {
             : null;
 
         let config = {
-            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
+            headers: { 'Authorization': token },
             params: {
                 userId: id
             },
@@ -41,9 +40,9 @@ export default {
             : null;
 
         let config = {
-            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
+            headers: { 'Authorization': token },
         };
-        console.log(data);
+         
         return Api.put(`${END_POINT}/UpdateUser`, data, config);
     },
 
@@ -53,7 +52,7 @@ export default {
             : null;
 
         let config = {
-            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
+            headers: { 'Authorization': token },
             params: {
                 name: data.name,
             },
@@ -67,7 +66,7 @@ export default {
             : null;
 
         let config = {
-            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
+            headers: { 'Authorization': token },
         };
         return Api.post(`${END_POINT}/CreateAdmin`, data, config);
     },
@@ -77,7 +76,7 @@ export default {
             : null;
 
         let config = {
-            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
+            headers: { 'Authorization': token },
         };
         return Api.put(`${END_POINT}/UpdateAdmin`, data, config);
     },
@@ -87,14 +86,14 @@ export default {
             : null;
 
         let config = {
-            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
+            headers: { 'Authorization': token },
             params: {
                 id: id
             }
         };
         //let config = {
         //    headers: {
-        //        'Authorization': token,
+        //        'Authorization': token
         //        'Content-Type': 'application/json', // Set the content type if you're sending JSON data
         //      },
         //};
@@ -102,15 +101,15 @@ export default {
         return responce;
     },
 
-    GetTeams(data) {
+    GetTeams(data = {}) {
         let token = localStorage.getItem("token")
             ? JSON.parse(localStorage.getItem("token"))
             : null;
 
         let config = {
-            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
+            headers: { 'Authorization': token },
             params: {
-                name: data.name || "",
+                name: data?.name || "",
             },
         };
         return Api.get(`${END_POINT}/GetTeams`, config);
@@ -121,7 +120,7 @@ export default {
             : null;
 
         let config = {
-            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
+            headers: { 'Authorization': token },
         };
         return Api.post(`${END_POINT}/CreateTeam`, data, config);
     },
@@ -131,7 +130,7 @@ export default {
             : null;
 
         let config = {
-            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
+            headers: { 'Authorization': token },
         };
         return Api.put(`${END_POINT}/UpdateTeam`, data, config);
     },
@@ -141,7 +140,7 @@ export default {
             : null;
 
         let config = {
-            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
+            headers: { 'Authorization': token },
             params: {
                 id: id
             }
@@ -156,7 +155,7 @@ export default {
             : null;
 
         let config = {
-            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
+            headers: { 'Authorization': token },
             params: {
                 name: data.name || "",
                 teamId: data.teamId || 0,
@@ -170,7 +169,7 @@ export default {
             : null;
 
         let config = {
-            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
+            headers: { 'Authorization': token },
         };
         return Api.post(`${END_POINT}/CreateTeamLeader`, data, config);
     },
@@ -180,7 +179,7 @@ export default {
             : null;
 
         let config = {
-            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
+            headers: { 'Authorization': token },
         };
         return Api.put(`${END_POINT}/UpdateTeamLeader`, data, config);
     },
@@ -190,7 +189,7 @@ export default {
             : null;
 
         let config = {
-            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
+            headers: { 'Authorization': token },
             params: {
                 id: id
             }
@@ -205,7 +204,7 @@ export default {
             : null;
 
         let config = {
-            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
+            headers: { 'Authorization': token },
             params: {
                 name: data.name || "",
                 teamId: data.teamId || 0,
@@ -219,7 +218,7 @@ export default {
             : null;
 
         let config = {
-            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
+            headers: { 'Authorization': token },
         };
         return Api.post(`${END_POINT}/CreateTeamMember`, data, config);
     },
@@ -229,7 +228,7 @@ export default {
             : null;
 
         let config = {
-            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
+            headers: { 'Authorization': token },
         };
         return Api.put(`${END_POINT}/UpdateTeamMember`, data, config);
     },
@@ -239,7 +238,7 @@ export default {
             : null;
 
         let config = {
-            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
+            headers: { 'Authorization': token },
             params: {
                 id: id
             }
@@ -260,12 +259,12 @@ export default {
             : null;
 
         let config = {
-            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
+            headers: { 'Authorization': token },
         };
 
         // let config = {
         //     headers: {
-        //         'Authorization': token,
+        //         'Authorization': token
         //         'Content-Type': 'application/json', // Set the content type if you're sending JSON data
         //       },
         // };

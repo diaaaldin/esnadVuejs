@@ -3,7 +3,6 @@ import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router/index';
 import axios from 'axios';
-import VueAxios from 'vue-axios';
 import store from '../store/index';
 import moshaToast from 'mosha-vue-toastify';
 import 'mosha-vue-toastify/dist/style.css';
@@ -22,7 +21,13 @@ axios.defaults.withCredentials = true;
   // app.component('VuePhotoSphereViewer', VuePhotoSphereViewer);
 
 app.use(router);
-app.use(VueAxios, axios);
+// Axios setup for Vue 3 - use directly without vue-axios wrapper
+// vue-axios is not needed in Vue 3, we can use axios directly
+app.config.globalProperties.$http = axios;
+app.config.globalProperties.$axios = axios;
+// Provide axios for dependency injection if needed
+app.provide('axios', axios);
+// Vuex store for Vue 3
 app.use(store);
 app.use(moshaToast);
 app.use(ElementPlus);

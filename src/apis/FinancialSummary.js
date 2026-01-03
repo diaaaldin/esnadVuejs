@@ -10,7 +10,7 @@ export default {
             : null;
 
         let config = {
-            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
+            headers: { 'Authorization': token },
             params: {
                 teamId: data.teamId || 0,
                 walletId: data.walletId !== undefined && data.walletId !== null ? data.walletId.toString() : "",

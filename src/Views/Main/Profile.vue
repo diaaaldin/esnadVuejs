@@ -86,7 +86,6 @@ export default {
 	        	});
         
 	        	this.ChangePassword(this.changePasswordData).then(Response => {
-	        		// console.log(Response);
 	        		this.$moshaToast(this.$t('general_update_operation_success_message'), {
 	        			hideProgressBar: 'false',
 	        			showIcon: 'true',
@@ -166,9 +165,6 @@ export default {
 				background: 'rgba(0, 0, 0, 0.7)',
 				text: "",
 			});
-            // this.GetStates();
-            // this.GetCities();
-			console.log(this.data);
 			this.UserProfileInfo(this.data.id).then(Response => {
 				this.setData();
 				loading.close();
@@ -232,7 +228,6 @@ export default {
 					text: "",
 				});
 
-				//// console.log("this.data for update : ", this.data);
 				this.UserUpdate(this.data).then(Response => {
 					this.$moshaToast(this.$t('general_update_operation_success_message'), {
 						hideProgressBar: 'false',
@@ -359,7 +354,6 @@ export default {
 					text: "",
 				});
 
-				//// console.log("this.data for update : ", this.data);
 				this.UpdateAdminImage(this.imagePath).then(Response => {
 					this.$moshaToast(this.$t('general_update_operation_success_message'), {
 						hideProgressBar: 'false',

@@ -11,6 +11,7 @@ const teams = () => import('../Views/Main/Users/Teams.vue')
 const team_leaders = () => import('../Views/Main/Users/TeamLeaders.vue')
 const team_mempers = () => import('../Views/Main/Users/TeamMempers.vue')
 const AccissDenied = () => import('../Views/AccessDenied.vue')
+const AboutUs = () => import('../Views/AboutUs.vue')
 
 const funders = () => import('../Views/Main/Code/Funders.vue')
 const currencies = () => import('../Views/Main/Code/Currencies.vue')
@@ -47,6 +48,11 @@ const routes = [
         path: '/AccissDenied',
         name: "AccissDenied",
         component: AccissDenied
+    },
+    {
+        path: '/about-us',
+        name: "AboutUs",
+        component: AboutUs
     },
     // {
     //     path: '/general',

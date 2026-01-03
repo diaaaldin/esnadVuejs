@@ -44,7 +44,6 @@ export default {
     handleImageCropped() {
       var self = this;
       this.cropper.getCroppedCanvas().toBlob((blob) => {
-        console.log(blob);
         //this.$emit('imageCropped', blob);
         // Create a new File object from the blob
         const file = new File([blob], 'cropped_image.jpg', { type: 'image/jpeg' });
@@ -60,10 +59,8 @@ export default {
       reader.onload = function () {
         this.profileImageUpdating = reader.result;
         let res = this.profileImageUpdating;
-        console.log(res);
         if (res != "") {
           self.UpdateImageProfile(res).then(Response => {
-            console.log(Response);
             self.$moshaToast('Change Profile Image Success', {
               hideProgressBar: 'false',
               showIcon: 'true',

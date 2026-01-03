@@ -51,38 +51,35 @@ export default {
 					text: "",
 				});
 
-				this.UserLogin(this.user).then(Response => {
+				this.UserLogin(this.user).then(Response => {				
 					this.$moshaToast(this.$t('login_success_message'), {
-						hideProgressBar: 'false',
-						showIcon: 'true',
-						swipeClose: 'true',
-						type: 'success',
-						timeout: 3000,
-					});
+					hideProgressBar: false,
+					showIcon: true,
+					swipeClose: true,
+					type: 'success',
+					timeout: 3000,
+				});
 					loading.close();
-					
 					this.$router.push({ name: "Home" });
-					
-
 				}).catch(error => {
 					// Handle any errors that might occur during the API call
 					//console.error(error);
 					if (error.response && error.response.status === 401) {
 						this.$moshaToast(this.$t('general_user_not_allow_error_message'), {
-							hideProgressBar: 'false',
+							hideProgressBar: false,
 							position: 'top-center',
-							showIcon: 'true',
-							swipeClose: 'true',
+							showIcon: true,
+							swipeClose: true,
 							type: 'warning',
 							timeout: 3000,
 						});
 					} else {
 						// Handle other errors with the provided message from the response
 						this.$moshaToast(error.response?.data?.message || 'An error occurred', {
-							hideProgressBar: 'false',
+							hideProgressBar: false,
 							position: 'top-center',
-							showIcon: 'true',
-							swipeClose: 'true',
+							showIcon: true,
+							swipeClose: true,
 							type: 'warning',  // Default type is 'warning'
 							timeout: 3000,
 						});
@@ -96,10 +93,10 @@ export default {
 		checkValidation() {
 			if (this.user.email.trim() == '') {
 				this.$moshaToast(this.$t('login_check_validation_email_message'), {
-					hideProgressBar: 'false',
+					hideProgressBar: false,
 					position: 'top-center',
-					showIcon: 'true',
-					swipeClose: 'true',
+					showIcon: true,
+					swipeClose: true,
 					type: 'warning',
 					timeout: 3000,
 				});
@@ -108,10 +105,10 @@ export default {
 			}
 			if (this.user.password.trim() == '') {
 				this.$moshaToast(this.$t('login_check_validation_password_message'), {
-					hideProgressBar: 'false',
+					hideProgressBar: false,
 					position: 'top-center',
-					showIcon: 'true',
-					swipeClose: 'true',
+					showIcon: true,
+					swipeClose: true,
 					type: 'warning',
 					timeout: 3000,
 				});
@@ -254,6 +251,11 @@ export default {
 								<a href="javascript:void(0)" @click="showForgotPasswordModal()" data-bs-toggle="modal" data-bs-target="#forgot_password">
 									{{ $t('login_forgot_password') || 'Forgot Password?' }}
 								</a>
+							</div>
+							<div class="text-center mt-3">
+								<router-link to="/about-us" class="text-muted small">
+									<i class="fa fa-info-circle me-1"></i>من نحن
+								</router-link>
 							</div>
 							<!--	<div class="login-or">
 									<span class="or-line"></span>

@@ -5,7 +5,6 @@ export const GetAllIncomes = ({ commit, dispatch }, data) => {
         // API response structure: { pagination: { currentPage, pageCount, pageSize, rowCount }, data: [], sortable: {}, filterable: {} }
         const responseData = response.data.data || {};
         const incomesData = responseData.incomes || responseData;
-        console.log("incomesData : ", incomesData);
         
         const paginationInfo = incomesData.pagination || {};
         const incomesList = incomesData.data || [];

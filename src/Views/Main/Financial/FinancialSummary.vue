@@ -130,6 +130,21 @@ export default {
             }
             return this.getWalletsData.filter(wallet => wallet.teamId === this.dataSearch.teamId);
         },
+
+        // Get outcome amounts (صادر + مصاريف تشغيلية) per wallet from API response
+        getOutcomeAmountsForCards() {
+            const paginationData = this.getFinancialSummaryData;
+            if (!paginationData || !paginationData.walletData) {
+                return [];
+            }
+
+            const walletData = paginationData.walletData;
+            // Filter wallets by selected team
+            return walletData.filter(wallet => {
+                if (this.dataSearch.teamId === 0) return false;
+                return wallet.teamId === this.dataSearch.teamId;
+            });
+        },
     },
     methods: {
         ...mapActions("FinancialSummary", ["GetFinancialSummary"]),
@@ -182,8 +197,6 @@ export default {
             };
 
             return this.GetFinancialSummary(searchParams).then(response => {
-                console.log("response : ", response );
-                console.log("this.getFinancialSummaryPagination : ", this.getFinancialSummaryPagination );
             }).catch(error => {
                 if (error.response && error.response.status === 401) {
                     this.$moshaToast(this.$t('general_user_not_allow_error_message'), {
@@ -266,6 +279,19 @@ export default {
                 });
             },
             deep: true
+        },
+        // Watch for outcome cards changes and replace icons
+        getOutcomeAmountsForCards: {
+            handler() {
+                this.$nextTick(() => {
+                    if (this.$replaceFeatherIcons) {
+                        setTimeout(() => {
+                            this.$replaceFeatherIcons();
+                        }, 100);
+                    }
+                });
+            },
+            deep: true
         }
     },
     updated() {
@@ -290,9 +316,9 @@ export default {
                 <h3 class="page-title">الملخص المالي</h3>
             </div>
 
-                <!-- Wallet Cards -->
-    <div class="row mb-3" v-if="dataSearch.teamId > 0 && getWalletsForCards.length > 0">
-        <div class="col-xl-3 col-md-4 col-sm-6 col-12 mb-2" v-for="wallet in getWalletsForCards" :key="wallet.id">
+                <!-- Wallet Balance Cards -->
+    <div class="row mb-3 wallet-cards-row" v-if="dataSearch.teamId > 0 && getWalletsForCards.length > 0">
+        <div class="wallet-card-col mb-2" v-for="wallet in getWalletsForCards" :key="'balance-' + wallet.id">
             <div class="card wallet-card-small">
                 <div class="card-body p-2">
                     <div class="dash-widget-header">
@@ -313,8 +339,39 @@ export default {
                 </div>
             </div>
         </div>
+        
+        <div class="wallet-card-col mb-2" v-for="wallet in getOutcomeAmountsForCards" :key="'outcome-' + wallet.id">
+            <div class="card wallet-card-small">
+                <div class="card-body p-2">
+                    <div class="dash-widget-header">
+                        <span class="dash-widget-icon text-danger border-danger">
+                            <img src="/images/icons-fund.png" alt="Outcomes" width="40" height="40">
+
+                        </span>
+                        <div class="dash-count">
+                            <h5 class="mb-0 text-danger">{{formatCurrency(wallet.balance || 0, wallet.currencyId || 0) }}</h5>
+                        </div>
+                    </div>
+                    <div class="dash-widget-info mt-2">
+                        <h6 class="text-muted mb-1 small">{{ wallet.name }} - إجمالي المصروفات</h6>
+                        <div class="progress progress-xs">
+                            <div class="progress-bar bg-danger w-50"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
-    <!-- /Wallet Cards -->
+    <!-- /Wallet Balance Cards -->
+
+    <!-- Wallet Outcome Amount Cards -->
+    <div class="row mb-3 wallet-cards-row" v-if="dataSearch.teamId > 0 && getOutcomeAmountsForCards.length > 0">
+       
+    </div> 
+   
+    <!-- /Wallet Outcome Amount Cards -->
+     
             <div class="col-12 row mt-3">
                 <!-- Filters -->
                 <div class="col-12 col-sm-6 col-md-3 mb-2" v-if="isAdmin">
@@ -472,5 +529,36 @@ export default {
 
 .wallet-card-small .progress-xs {
     height: 0.25rem;
+}
+
+/* Display exactly 4 cards per row */
+.wallet-cards-row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: -0.5rem;
+    margin-right: -0.5rem;
+}
+
+.wallet-card-col {
+    flex: 0 0 calc(25% - 1rem);
+    max-width: calc(25% - 1rem);
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+
+/* Responsive: 2 cards per row on tablets */
+@media (max-width: 992px) {
+    .wallet-card-col {
+        flex: 0 0 calc(50% - 1rem);
+        max-width: calc(50% - 1rem);
+    }
+}
+
+/* Responsive: 1 card per row on mobile */
+@media (max-width: 576px) {
+    .wallet-card-col {
+        flex: 0 0 calc(100% - 1rem);
+        max-width: calc(100% - 1rem);
+    }
 }
 </style>

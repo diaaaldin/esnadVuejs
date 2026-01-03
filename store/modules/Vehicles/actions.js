@@ -1,7 +1,6 @@
 import Vehicle from "@/apis/Vehicle";
 
 export const GetVehicelForUpdate = ({ commit, dispatch },id) => {
-    // console.log("action run ");
     return Vehicle.GetVehicelForUpdate(id).then(function (response) {
         commit('SET_VEHICEL_DATA', response.data.data);
         return response.data.data;

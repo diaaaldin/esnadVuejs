@@ -10,7 +10,7 @@ export default {
         : null;
 
          let config = {
-             headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
+             headers: { 'Authorization': token },
          };
 
         return Api.get(`${END_POINT}/GetPermissions`, config);
@@ -23,10 +23,9 @@ export default {
 
   
         let config = {
-            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
+            headers: { 'Authorization': token },
         };
 
-        // console.log("put data : " , data);
         const responce = Api.put(`${END_POINT}/UpdateUserPermission`, data, config);
         return responce;
     },

@@ -5,7 +5,6 @@ export const GetPeopleProjectsByProjectId = ({ commit, dispatch }, data) => {
         // API response structure: { data: { people: { pagination: {...}, data: [...] } } }
         const responseData = response.data.data || {};
         const peopleData = responseData.people || responseData;
-        console.log("peopleProjectsData : ", peopleData);
         
         const paginationInfo = peopleData.pagination || {};
         const peopleProjectsList = peopleData.data || [];

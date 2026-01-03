@@ -15,7 +15,7 @@ export default {
         HomeCard,
     },
 	created() {
-        console.log( "getUserInfo", this.getUserInfo);	
+
     },
     computed:{
 		...mapGetters("Users", ["getUserInfo"]),

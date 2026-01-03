@@ -203,8 +203,6 @@ export default {
             };
 
             return this.GetAllProjects(searchParams).then(response => {
-                // console.log("response : ", response );
-                // console.log("this.getProjectsPagination : ", this.getProjectsPagination );
             }).catch(error => {
                 if (error.response && error.response.status === 401) {
                     this.$moshaToast(this.$t('general_user_not_allow_error_message'), {
@@ -254,7 +252,6 @@ export default {
                 });
 
                 this.UpdateProject(this.data).then(Response => {
-                    console.log(Response);
                     this.$moshaToast(this.$t('general_update_operation_success_message'), {
                         hideProgressBar: 'false',
                         showIcon: 'true',
@@ -378,7 +375,6 @@ export default {
                 });
 
                 this.CreateProject(this.data).then(Response => {
-                    console.log(Response);
                     this.$moshaToast(this.$t('general_create_operation_success_message'), {
                         hideProgressBar: 'false',
                         showIcon: 'true',
@@ -433,7 +429,6 @@ export default {
         goToProjectPeople(id){
             // Find the project item to get the projectCFK
             const foundItem = this.getProjectsPagination.data.find(element => element.id === id);
-            console.log("foundItem : ", foundItem );
             if (foundItem && foundItem.id) {
                 // Navigate to ProjectsPeopleManagement with the projectCFK as projectId
                 this.$router.push({ 
@@ -461,7 +456,6 @@ export default {
                 });
 
                 this.DeleteProject(this.data.id).then(Response => {
-                    console.log(Response);
                     this.$moshaToast(this.$t('general_delete_operation_success_message'), {
                         hideProgressBar: 'false',
                         showIcon: 'true',
@@ -540,7 +534,6 @@ export default {
             });
 
             this.CreateProjectsFromExcel(this.excelFile).then(Response => {
-                console.log(Response);
                 this.$moshaToast('تم رفع الملف بنجاح', {
                     hideProgressBar: 'false',
                     showIcon: 'true',
@@ -678,7 +671,7 @@ export default {
                                     <th class="text-center">جهة التمويل</th>
                                     <th class="text-center">المشروع</th>
                                     <th class="text-center">الوجهة</th>
-                                    <th class="text-center">عدد الأشخاص</th>
+                                    <th class="text-center">عدد المستفيدين</th>
                                     <th class="text-center">التاريخ</th>
                                     <th class="text-center">الملاحظات</th>
                                     <th></th>
@@ -943,7 +936,7 @@ export default {
                                 2. الممول <br>
                                 3. المشروع <br>
                                 4. الوجهة <br>
-                                5. عدد الأشخاص <br>
+                                5. عدد المستفيدين <br>
                                 6. التاريخ <br>
                                 7. الملاحظات
                             </small>

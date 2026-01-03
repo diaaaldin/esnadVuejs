@@ -23,13 +23,9 @@ export const ReadNotReadNotifications = ({ commit, getters }) => {
         let notiIds = response.data.data;
         
         let notificationsData = getters.getUserNotificationsData;
-        console.log("notiIds : ", notiIds);
-        console.log("Notification befor : ", notificationsData);
         let notificationArray = notificationsData.notifications.data;
-        console.log("notificationArray : ", notificationArray);
 
         notificationsData.notReadNum = 0;
-        console.log("Notification after : ", notificationsData);
         commit('SET_USER_NOTIFICATIONS_DATA', notificationsData);
         return response.data.data;
     }).catch(function (error) {
@@ -41,9 +37,7 @@ export const ReadAdminNotification = ({ commit, getters }, notficationId) => {
     return Notification.ReadAdminNotification(notficationId).then(function (response) {
         let notiId = response.data.data;
         let notificationsData = getters.getAdminNotificationsData;
-        console.log("Notification befor : ", notificationsData);
         let notificationArray = notificationsData.notifications.data;
-        console.log("notificationArray : ", notificationArray);
         notificationArray.forEach(notification => {
             // Check if the notification ID is in the list of IDs to update
             if (notiId === notification.id && notification.isRead == false) {
@@ -53,7 +47,6 @@ export const ReadAdminNotification = ({ commit, getters }, notficationId) => {
             }
         });
         notificationsData.notifications.data = notificationArray;
-        console.log("Notification after : ", notificationsData);
         commit('SET_ADMIN_NOTIFICATIONS_DATA', notificationsData);
         return response.data.data;
     }).catch(function (error) {

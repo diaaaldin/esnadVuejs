@@ -30,7 +30,7 @@ export default {
             : null;
 
         let config = {
-            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
+            headers: { 'Authorization': token },
         };
 
         const responce = Api.post(`${END_POINT}/CreateProject`, data, config);
@@ -43,7 +43,7 @@ export default {
             : null;
 
         let config = {
-            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
+            headers: { 'Authorization': token },
         };
 
         const responce = Api.put(`${END_POINT}/UpdateProject`, data, config);
@@ -56,7 +56,7 @@ export default {
             : null;
 
         let config = {
-            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
+            headers: { 'Authorization': token },
             params: {
                 id: id
             }
@@ -76,9 +76,8 @@ export default {
 
         let config = {
             headers: { 
-                'Authorization': token, 
-                "Access-Control-Allow-Origin": "*",
-                'Content-Type': 'multipart/form-data'
+                'Authorization': token
+                ,'Content-Type': 'multipart/form-data'
             },
         };
 

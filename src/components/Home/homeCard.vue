@@ -15,10 +15,10 @@ export default {
             }
 		}
 	},
-	mounted() {
+	async mounted() {
         // Load teams if admin
         if (this.isAdmin) {
-            this.loadTeams();
+           await this.loadTeams();
         }
         // Load statistics on mount
         this.statisticsFunc();

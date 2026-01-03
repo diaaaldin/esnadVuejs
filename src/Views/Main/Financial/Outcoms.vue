@@ -13,6 +13,7 @@ export default {
                 projectCFK: 0,
                 amount: 0,
                 amountNumber: 0,
+                code: "",
                 destinationCFK: 0,
                 walletId: 0,
                 peopleCount: 0,
@@ -51,6 +52,9 @@ export default {
             },
 
             excelFile: null,
+
+            // Multi-select for bulk delete
+            selectedItems: [],
 
             // Store codes separately
             fundWaysList: [],
@@ -204,9 +208,18 @@ export default {
             if (!foundItem) return false;
             return foundItem.runningCostAmount > 0 || (foundItem.runningCostWallet && foundItem.runningCostWallet.trim() !== '');
         },
+
+        isAllSelected() {
+            if (this.getOutcomesPagination.data.length === 0) return false;
+            return this.getOutcomesPagination.data.every(item => this.selectedItems.includes(item.id));
+        },
+
+        hasSelectedItems() {
+            return this.selectedItems.length > 0;
+        },
     },
     methods: {
-        ...mapActions("Outcomes", ["GetAllOutcomes", "CreateOutcome", "UpdateOutcome", "DeleteOutcome", "CreateOutcomesFromExcel"]),
+        ...mapActions("Outcomes", ["GetAllOutcomes", "CreateOutcome", "UpdateOutcome", "DeleteOutcome", "DeleteMultiOutcome", "CreateOutcomesFromExcel"]),
         ...mapActions("Users", ["GetTeams"]),
         ...mapActions("Wallets", ["GetAllWallets"]),
         ...mapActions("Code", ["GetCodesByParent"]),
@@ -305,8 +318,8 @@ export default {
             };
 
             return this.GetAllOutcomes(searchParams).then(response => {
-                console.log("response : ", response );
-                console.log("this.getOutcomesPagination : ", this.getOutcomesPagination );
+                // Clear selections when data changes
+                this.selectedItems = [];
             }).catch(error => {
                 if (error.response && error.response.status === 401) {
                     this.$moshaToast(this.$t('general_user_not_allow_error_message'), {
@@ -343,6 +356,7 @@ export default {
             this.data.projectCFK = 0;
             this.data.amount = 0;
             this.data.amountNumber = 0;
+            this.data.code = "";
             this.data.destinationCFK = 0;
             this.data.walletId = 0;
             this.data.peopleCount = 0;
@@ -385,7 +399,7 @@ export default {
                 }
 
                 this.UpdateOutcome(dataToSend).then(Response => {
-                    console.log(Response);
+                     
                     this.$moshaToast(this.$t('general_update_operation_success_message'), {
                         hideProgressBar: 'false',
                         showIcon: 'true',
@@ -532,7 +546,7 @@ export default {
                 }
 
                 this.CreateOutcome(dataToSend).then(Response => {
-                    console.log(Response);
+                     
                     this.$moshaToast(this.$t('general_create_operation_success_message'), {
                         hideProgressBar: 'false',
                         showIcon: 'true',
@@ -581,6 +595,7 @@ export default {
                 this.data.projectCFK = foundItem.projectCFK || 0;
                 this.data.amount = foundItem.amount || 0;
                 this.data.amountNumber = foundItem.amountNumber || 0;
+                this.data.code = foundItem.code || "";
                 this.data.destinationCFK = foundItem.destinationCFK || 0;
                 this.data.walletId = foundItem.walletId || 0;
                 this.data.peopleCount = foundItem.peopleCount || 0;
@@ -648,7 +663,7 @@ export default {
                 });
 
                 this.DeleteOutcome(this.data.id).then(Response => {
-                    console.log(Response);
+                     
                     this.$moshaToast(this.$t('general_delete_operation_success_message'), {
                         hideProgressBar: 'false',
                         showIcon: 'true',
@@ -727,7 +742,7 @@ export default {
             });
 
             this.CreateOutcomesFromExcel(this.excelFile).then(Response => {
-                console.log(Response);
+                 
                 this.$moshaToast('تم رفع الملف بنجاح', {
                     hideProgressBar: 'false',
                     showIcon: 'true',
@@ -743,6 +758,7 @@ export default {
                 const fileInput = document.getElementById('excelFileInput');
                 if (fileInput) fileInput.value = '';
             }).catch(error => {
+                console.log("error : ", error)
                 if (error.response && error.response.status === 401) {
                     this.$moshaToast(this.$t('general_user_not_allow_error_message'), {
                         hideProgressBar: 'false',
@@ -785,6 +801,82 @@ export default {
 				maximumFractionDigits: 0
 			}).format(value);
 		},
+
+        // Multi-select methods
+        toggleSelectAll() {
+            if (this.isAllSelected) {
+                this.selectedItems = [];
+            } else {
+                this.selectedItems = this.getOutcomesPagination.data.map(item => item.id);
+            }
+        },
+
+        toggleSelectItem(id) {
+            const index = this.selectedItems.indexOf(id);
+            if (index > -1) {
+                this.selectedItems.splice(index, 1);
+            } else {
+                this.selectedItems.push(id);
+            }
+        },
+
+        isItemSelected(id) {
+            return this.selectedItems.includes(id);
+        },
+
+        DeleteMultiFunc() {
+            if (this.selectedItems.length === 0) {
+                this.$moshaToast('يرجى اختيار عنصر واحد على الأقل للحذف', {
+                    hideProgressBar: false,
+                    position: 'top-center',
+                    showIcon: true,
+                    swipeClose: true,
+                    type: 'warning',
+                    timeout: 3000,
+                });
+                return;
+            }
+
+            const loading = ElLoading.service({
+                lock: true,
+                background: 'rgba(0, 0, 0, 0.7)',
+                text: "",
+            });
+
+            this.DeleteMultiOutcome(this.selectedItems).then(Response => {
+                this.$moshaToast(`تم حذف ${this.selectedItems.length} عنصر بنجاح`, {
+                    hideProgressBar: false,
+                    showIcon: true,
+                    swipeClose: true,
+                    type: 'success',
+                    timeout: 3000,
+                });
+                loading.close();
+                this.selectedItems = [];
+                this.getDataFunc();
+            }).catch(error => {
+                if (error.response && error.response.status === 401) {
+                    this.$moshaToast(this.$t('general_user_not_allow_error_message'), {
+                        hideProgressBar: false,
+                        position: 'top-center',
+                        showIcon: true,
+                        swipeClose: true,
+                        type: 'warning',
+                        timeout: 3000,
+                    });
+                } else {
+                    this.$moshaToast(error.response?.data?.message || 'حدث خطأ أثناء حذف العناصر', {
+                        hideProgressBar: false,
+                        position: 'top-center',
+                        showIcon: true,
+                        swipeClose: true,
+                        type: 'warning',
+                        timeout: 3000,
+                    });
+                }
+                loading.close();
+            });
+        },
     }
 };
 </script>
@@ -862,7 +954,10 @@ export default {
                 <div class="col-12 mt-2">
                     <a href="#add_modal" data-toggle="modal" v-on:click="clearData()"
                         class="btn btn-primary float-left mr-3">{{ $t('general_create_button') }}</a>
-                    <a href="#excel_modal" data-toggle="modal" class="btn btn-success float-left">رفع من Excel</a>
+                    <a href="#excel_modal" data-toggle="modal" class="btn btn-success float-left mr-3">رفع من Excel</a>
+                    <button v-if="hasSelectedItems" @click="DeleteMultiFunc()" class="btn btn-danger float-left">
+                        حذف المحدد ({{ selectedItems.length }})
+                    </button>
                 </div>
             </div>
         </div>
@@ -887,7 +982,12 @@ export default {
                         <table class="datatable table table-hover table-center mb-0">
                             <thead>
                                 <tr>
+                                    <th class="text-center" style="width: 50px;">
+                                        <input type="checkbox" :checked="isAllSelected" @change="toggleSelectAll()" 
+                                            :indeterminate="selectedItems.length > 0 && !isAllSelected">
+                                    </th>
                                     <th class="text-center">ID</th>
+                                    <th class="text-center">رقم المشروع</th>
                                     <th class="text-center">الممول</th>
                                     <th class="text-center">المشروع</th>
                                     <th class="text-center">المبلغ</th>
@@ -895,8 +995,8 @@ export default {
                                     <th class="text-center">المحفظة</th>
                                     <th class="text-center">وحدة القياس</th>
                                     <th class="text-center">الكمية</th>
-                                    <th class="text-center">عدد الأشخاص</th>
-                                    <th class="text-center">المصور</th>
+                                    <th class="text-center">عدد المستفيدين</th>
+                                    <th class="text-center">فريق التوثيق</th>
                                     <th class="text-center">التاريخ</th>
                                     <th class="text-center">الملاحظات</th>
                                     <th class="text-center">قيمة المصاريف التشغيلية</th>
@@ -907,8 +1007,12 @@ export default {
                             </thead>
                             <tbody>
                                 <tr v-for="(item, index) in getOutcomesPagination.data" :key="item.id">
-                                    <td class="text-center">{{ (currentPage - 1) * pagination.pageSize + index + 1 }}
+                                    <td class="text-center">
+                                        <input type="checkbox" :checked="isItemSelected(item.id)" 
+                                            @change="toggleSelectItem(item.id)">
                                     </td>
+                                    <td class="text-center">{{ (currentPage - 1) * pagination.pageSize + index + 1 }}</td>
+                                    <td class="text-center">{{ item.code || '-' }}</td>
                                     <td class="text-center">{{ item.funder }}</td>
                                     <td class="text-center">{{ item.project }}</td>
                                     <td class="text-center">{{ formatCurrency(item.amount) }}</td>
@@ -1004,6 +1108,12 @@ export default {
                                     </select>
                                 </div>
                             </div>
+                            <div class="col-12 col-sm-6">
+                                <div class="form-group">
+                                    <label>الكود</label>
+                                    <input v-model="data.code" type="text" class="form-control" placeholder="الكود">
+                                </div>
+                            </div>
                             <!-- <div class="col-12 col-sm-6">
                                 <div class="form-group">
                                     <label>المبلغ</label>
@@ -1028,7 +1138,7 @@ export default {
                             </div>
                             <div class="col-12 col-sm-6">
                                 <div class="form-group">
-                                    <label>عدد الأشخاص</label>
+                                    <label>عدد المستفيدين</label>
                                     <input v-model="data.peopleCount" type="number" class="form-control">
                                 </div>
                             </div>
@@ -1150,6 +1260,12 @@ export default {
                             </div>
                             <div class="col-12 col-sm-6">
                                 <div class="form-group">
+                                    <label>الكود</label>
+                                    <input v-model="data.code" type="text" class="form-control" placeholder="الكود">
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <div class="form-group">
                                     <label>المبلغ</label>
                                     <input v-model="data.amount" type="number" step="0.01" class="form-control">
                                 </div>
@@ -1172,15 +1288,15 @@ export default {
                             </div>
                             <div class="col-12 col-sm-6">
                                 <div class="form-group">
-                                    <label>عدد الأشخاص</label>
+                                    <label>عدد المستفيدين</label>
                                     <input v-model="data.peopleCount" type="number" class="form-control">
                                 </div>
                             </div>
                             <div class="col-12 col-sm-6">
                                 <div class="form-group">
-                                    <label>المصور</label>
+                                    <label>فريق التوثيق</label>
                                     <select v-model="data.photographedByCFK" class="form-control">
-                                        <option value="0">-- إختر المصور --</option>
+                                        <option value="0">-- إختر فريق التوثيق --</option>
                                         <option v-for="photographer in getPhotographersData" :key="photographer.id"
                                             :value="photographer.id">{{ photographer.name }}</option>
                                     </select>
@@ -1274,18 +1390,19 @@ export default {
                             <small class="form-text text-muted">
                                 يجب أن يحتوي الملف على الأعمدة التالية بالترتيب:<br>
                                 1. التاريخ <br>
-                                2. إسم المشروع <br>
-                                3. الممول <br>
-                                4. المبلغ <br>
-                                5. المنطقة <br>
-                                6. العدد <br>
-                                7. المحفظة <br>
-                                8. عدد الأشخاص <br>
-                                9. المصور <br>
-                                10. الملاحظات <br>
-                                11. مبلغ المصاريف التشغيلية (اختياري) <br>
-                                12. محفظة المصاريف التشغيلية (اختياري) <br>
-                                13. ملاحظات المصاريف التشغيلية (اختياري)
+                                2. رقم المشروع <br>
+                                3. إسم المشروع <br>
+                                4. الممول <br>
+                                5. المبلغ <br>
+                                6. المنطقة <br>
+                                7. العدد <br>
+                                8. المحفظة <br>
+                                9. عدد المستفيدين <br>
+                                10. فريق التوثيق <br>
+                                11. الملاحظات <br>
+                                12. مبلغ المصاريف التشغيلية (اختياري) <br>
+                                13. محفظة المصاريف التشغيلية (اختياري) <br>
+                                14. ملاحظات المصاريف التشغيلية (اختياري)
                             </small>
                         </div>
                         <button v-on:click="uploadExcelFunc()" class="btn btn-success btn-block">رفع الملف</button>

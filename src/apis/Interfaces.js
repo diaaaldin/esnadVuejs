@@ -30,11 +30,11 @@ export default{
         : null;
 
         let config = {
-            headers: {'Authorization': token, "Access-Control-Allow-Origin" : "*"  },
+            headers: {'Authorization': token  },
         };
         // let config = {
         //     headers: {
-        //         'Authorization': token,
+        //         'Authorization': token
         //         'Content-Type': 'application/json', // Set the content type if you're sending JSON data
         //       },
         // };
@@ -48,7 +48,7 @@ export default{
         : null;
 
         let config = {
-            headers: {'Authorization': token , "Access-Control-Allow-Origin" : "*" },
+            headers: {'Authorization': token  },
         };
 
            const responce = Api.put(`${END_POINT}/UpdateInterfaceItem`, data , config);
@@ -60,14 +60,14 @@ export default{
         : null;
 
         let config = {
-            headers: {'Authorization': token, "Access-Control-Allow-Origin" : "*"  },
+            headers: {'Authorization': token  },
             params : {
                 id : id
             }
         };
         //let config = {
         //    headers: {
-        //        'Authorization': token,
+        //        'Authorization': token
         //        'Content-Type': 'application/json', // Set the content type if you're sending JSON data
         //      },
         //};

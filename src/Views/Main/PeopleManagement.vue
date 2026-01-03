@@ -226,8 +226,6 @@ export default {
             };
 
             return this.GetAllPeople(searchParams).then(response => {
-                console.log("response : ", response );
-                console.log("this.getPeoplePagination : ", this.getPeoplePagination );
             }).catch(error => {
                 if (error.response && error.response.status === 401) {
                     this.$moshaToast(this.$t('general_user_not_allow_error_message'), {
@@ -271,7 +269,6 @@ export default {
                 });
 
                 this.UpdatePeople(this.data).then(Response => {
-                    console.log(Response);
                     this.$moshaToast(this.$t('general_update_operation_success_message'), {
                         hideProgressBar: 'false',
                         showIcon: 'true',
@@ -372,7 +369,6 @@ export default {
                 });
 
                 this.CreatePeople(this.data).then(Response => {
-                    console.log(Response);
                     this.$moshaToast(this.$t('general_create_operation_success_message'), {
                         hideProgressBar: 'false',
                         showIcon: 'true',
@@ -432,7 +428,6 @@ export default {
                 });
 
                 this.DeletePeople(this.data.id).then(Response => {
-                    console.log(Response);
                     this.$moshaToast(this.$t('general_delete_operation_success_message'), {
                         hideProgressBar: 'false',
                         showIcon: 'true',
@@ -528,7 +523,6 @@ export default {
                 projectId: this.excelProjectId, 
                 exceptionPeriod: this.excelExceptionPeriod 
             }).then(Response => {
-                console.log(Response);
                 if (Response && Response.isFileDownload) {
                     this.$moshaToast(Response.message || 'تم تنزيل ملف الصفوف المرفوضة', {
                         hideProgressBar: 'false',
@@ -868,7 +862,7 @@ export default {
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">رفع الأشخاص من Excel</h5>
+                    <h5 class="modal-title">رفع المستفيدين من Excel</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>

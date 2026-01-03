@@ -5,7 +5,6 @@ export const GetAllProjects = ({ commit, dispatch }, data) => {
         // API response structure: { data: { projects: { pagination: {...}, data: [...] } } }
         const responseData = response.data.data || {};
         const projectsData = responseData.projects || responseData;
-        console.log("projectsData : ", projectsData);
         
         const paginationInfo = projectsData.pagination || {};
         const projectsList = projectsData.data || [];

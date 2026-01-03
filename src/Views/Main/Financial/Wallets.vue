@@ -103,7 +103,7 @@ export default {
                 name: this.dataSearch.name || "", 
                 fundWays: this.dataSearch.fundWays || 0 
             }).then(response => {
-                console.log("responce : " ,response);
+                 
 				loading.close();
 			}).catch(error => {
 				if (error.response && error.response.status === 401) {
@@ -187,7 +187,7 @@ export default {
                 });
 
                 this.UpdateWallet(this.data).then(Response => {
-                    console.log(Response);
+                     
                     this.$moshaToast(this.$t('general_update_operation_success_message'), {
                         hideProgressBar: 'false',
                         showIcon: 'true',
@@ -330,7 +330,7 @@ export default {
                 });
 
                 this.CreateWallet(this.data).then(Response => {
-                    console.log(Response);
+                     
                     this.$moshaToast(this.$t('general_create_operation_success_message'), {
                         hideProgressBar: 'false',
                         showIcon: 'true',
@@ -392,7 +392,7 @@ export default {
                 });
 
                 this.DeleteWallet(this.data.id).then(Response => {
-                    console.log(Response);
+                     
                     this.$moshaToast(this.$t('general_delete_operation_success_message'), {
                         hideProgressBar: 'false',
                         showIcon: 'true',

@@ -9,13 +9,12 @@ export default{
         ? JSON.parse(localStorage.getItem("token"))
         : null;
 
-        // console.log("data : ", data)
         let config = {
-            headers: {'Authorization': token , "Access-Control-Allow-Origin" : "*" },
+            headers: {'Authorization': token  },
         };
         // let config = {
         //     headers: {
-        //         'Authorization': token,
+        //         'Authorization': token
         //         'Content-Type': 'application/json', // Set the content type if you're sending JSON data
         //       },
         // };
@@ -29,11 +28,11 @@ export default{
         : null;
 
         let config = {
-            headers: {'Authorization': token }, "Access-Control-Allow-Origin" : "*" ,
+            headers: {'Authorization': token } ,
         };
         // let config = {
         //     headers: {
-        //         'Authorization': token,
+        //         'Authorization': token
         //         'Content-Type': 'application/json', // Set the content type if you're sending JSON data
         //       },
         // };
@@ -52,13 +51,11 @@ export default{
        
         let config = {
             headers: {
-                'Authorization': token, 
-                "Access-Control-Allow-Origin" : "*" ,
-                'Content-Type': 'application/json', // Set the content type if you're sending JSON data
+                'Authorization': token 
+                 ,'Content-Type': 'application/json', // Set the content type if you're sending JSON data
             },
         };
-        console.log("notficationId : " ,notficationId);
-        console.log("config : " ,config);
+    
            const responce = Api.put(`${END_POINT}/ReadAdminNotification`,notficationId,config);
            return responce;
     },
@@ -69,7 +66,7 @@ export default{
         : null;
 
         let config = {
-            headers: {'Authorization': token , "Access-Control-Allow-Origin" : "*" },
+            headers: {'Authorization': token  },
             params: {
                 page: data.page,
                 pageSize : data.pageSize
@@ -77,7 +74,7 @@ export default{
         };
         // let config = {
         //     headers: {
-        //         'Authorization': token,
+        //         'Authorization': token
         //         'Content-Type': 'application/json', // Set the content type if you're sending JSON data
         //       },
         // };
@@ -91,11 +88,11 @@ export default{
         : null;
 
         let config = {
-            headers: {'Authorization': token , "Access-Control-Allow-Origin" : "*" },
+            headers: {'Authorization': token  },
         };
         // let config = {
         //     headers: {
-        //         'Authorization': token,
+        //         'Authorization': token
         //         'Content-Type': 'application/json', // Set the content type if you're sending JSON data
         //       },
         // };
@@ -109,12 +106,12 @@ export default{
         : null;
 
         let config = {
-            headers: {'Authorization': token , "Access-Control-Allow-Origin" : "*" },
+            headers: {'Authorization': token  },
         };
 
         // let config = {
         //     headers: {
-        //         'Authorization': token,
+        //         'Authorization': token
         //         'Content-Type': 'application/json', // Set the content type if you're sending JSON data
         //       },
         // };

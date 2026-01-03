@@ -9,7 +9,7 @@ export default {
             : null;
 
         let config = {
-            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
+            headers: { 'Authorization': token },
             params: {
                 dateFrom: data.dateFrom,
                 dateTo: data.dateTo,

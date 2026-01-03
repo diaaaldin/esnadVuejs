@@ -121,7 +121,6 @@ export default {
         <header class="report-header">
             <div class="header-content">
                 <img src="/images/esnad_logo.png" alt="Logo" class="header-logo">
-                <div class="header-line"></div>
                 <h1 class="header-title">إسناد</h1>
             </div>
         </header>
@@ -182,7 +181,7 @@ export default {
     background-color: #ffff;
     min-height: 100vh;
     position: relative;
-    padding-top: 100px;
+    padding-top: 120px;
     padding-bottom: 80px;
 }
 
@@ -194,37 +193,30 @@ export default {
     right: 0;
     width: 100%;
     background-color: #fff;
-    padding: 15px 40px;
+    border-bottom: 3px solid #000;
+    padding: 20px 40px;
     z-index: 1000;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .header-content {
     display: flex;
-    flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     max-width: 100%;
 }
 
 .header-logo {
-    max-width: 80px;
-    width: 80px;
+    max-width: 100px;
+    width: 100px;
     height: auto;
-    margin-bottom: 10px;
-}
-
-.header-line {
-    width: 100%;
-    height: 2px;
-    background-color: #000;
-    margin: 8px 0;
 }
 
 .header-title {
+    flex-grow: 1;
     text-align: center;
-    margin: 5px 0 0 0;
-    font-size: 22px;
+    margin: 0;
+    font-size: 28px;
     font-weight: bold;
 }
 
@@ -318,7 +310,7 @@ export default {
 @media print {
     @page {
         size: A4;
-        margin-top: 100px;
+        margin-top: 120px;
         margin-bottom: 80px;
     }
 

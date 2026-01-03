@@ -12,10 +12,17 @@ export const UserLogin = ({ commit, dispatch }, data) => {
             localStorage.setItem('userName', JSON.parse(JSON.stringify(response.data.data.name)));
             localStorage.setItem('id', JSON.parse(JSON.stringify(response.data.data.id)));
             // localStorage.setItem('addressState',  JSON.parse(JSON.stringify(response.data.data.addressState)));
-            
             // Call GetUser after successful login
-            dispatch('GetUser').catch(function (error) {
+            // dispatch('GetUser').catch(function (error) {
+            //     console.error("Error getting user info:", error);
+            // });
+
+            // Call GetUser after successful login and wait for it to complete
+            return dispatch('GetUser').then(function (userInfo) {
+                return response.data.data;
+            }).catch(function (error) {
                 console.error("Error getting user info:", error);
+                throw error;
             });
 
         }
@@ -67,7 +74,7 @@ export const ChangePassword = ({ commit, dispatch }, data) => {
 }
 
 export const GetAdminUsers = ({ commit, dispatch }, data) => {
-    console.log(data);
+     
     return User.GetAdminUsers(data).then(function (response) {
         commit('SET_USERS_DATA', response.data.data);
         return response.data.data;
@@ -100,7 +107,7 @@ export const DeleteAdmin = ({ commit, dispatch }, id) => {
 }
 
 export const GetTeams = ({ commit, dispatch }, data) => {
-    console.log(data);
+     
     return User.GetTeams(data).then(function (response) {
         commit('SET_TEAMS_DATA', response.data.data);
         return response.data.data;
@@ -133,7 +140,7 @@ export const DeleteTeam = ({ commit, dispatch }, id) => {
 }
 
 export const GetTeamLeaders = ({ commit, dispatch }, data) => {
-    console.log(data);
+     
     return User.GetTeamLeaders(data).then(function (response) {
         commit('SET_TEAM_LEADERS_DATA', response.data.data);
         return response.data.data;
@@ -166,7 +173,7 @@ export const DeleteTeamLeader = ({ commit, dispatch }, id) => {
 }
 
 export const GetTeamMembers = ({ commit, dispatch }, data) => {
-    console.log(data);
+     
     return User.GetTeamMembers(data).then(function (response) {
         commit('SET_TEAM_MEMBERS_DATA', response.data.data);
         return response.data.data;

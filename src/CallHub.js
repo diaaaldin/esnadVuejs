@@ -7,10 +7,8 @@ class CallHub {
         .build();
     }
     async start() {
-        console.log("start connection");
         try {
             await this.client.start();
-            console.log("SignalR connected.");
         } catch (err) {
             console.error("SignalR connection error: ", err);
         }

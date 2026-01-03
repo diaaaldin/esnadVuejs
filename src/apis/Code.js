@@ -46,7 +46,7 @@ export default {
         : null;
 
         let config = {
-            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
+            headers: { 'Authorization': token },
         };
 
         const responce = Api.post(`${END_POINT}/CreateCode`, data, config);
@@ -59,7 +59,7 @@ export default {
         : null;
 
         let config = {
-            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
+            headers: { 'Authorization': token },
         };
 
         const responce = Api.put(`${END_POINT}/UpdateCode`, data, config);
@@ -72,7 +72,7 @@ export default {
         : null;
 
         let config = {
-            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
+            headers: { 'Authorization': token },
         };
 
         const responce = Api.post(`${END_POINT}/CreateCodeWithChild`, data, config);
@@ -85,7 +85,7 @@ export default {
         : null;
 
         let config = {
-            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
+            headers: { 'Authorization': token },
         };
 
         const responce = Api.put(`${END_POINT}/UpdateCodeWithChild`, data, config);
@@ -98,7 +98,7 @@ export default {
         : null;
 
         let config = {
-            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
+            headers: { 'Authorization': token },
             params: {
                 id: id
             }

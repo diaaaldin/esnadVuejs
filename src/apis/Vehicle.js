@@ -11,7 +11,7 @@ export default {
             : null;
 
         let config = {
-            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
+            headers: { 'Authorization': token },
             params: {
                 id: id,
             },
@@ -28,7 +28,7 @@ export default {
             : null;
 
         let config = {
-            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
+            headers: { 'Authorization': token },
             params: {
                 id: id,
             },
@@ -45,8 +45,7 @@ export default {
 
         let config = {
             headers: {
-                'Authorization': token,
-                'Access-Control-Allow-Origin': '*'
+                'Authorization': token
             },
             params: {
                 ...data.vm, // Spread the VehicleManagmentSearch object properties as query parameters
@@ -55,7 +54,6 @@ export default {
             }
         };
 
-        console.log("config: ", config);
         const response = Api.get(`${END_POINT}/GetVehiclesManagment`, config);
         return response;
     },
@@ -67,7 +65,7 @@ export default {
             : null;
 
         let config = {
-            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
+            headers: { 'Authorization': token },
             params: {
                 vehicleId: vehicleId,
             },
@@ -75,7 +73,7 @@ export default {
 
         // let config = {
         //     headers: {
-        //         'Authorization': token,
+        //         'Authorization': token
         //         'Content-Type': 'application/json', // Set the content type if you're sending JSON data
         //       },
         // };
@@ -89,11 +87,11 @@ export default {
             ? JSON.parse(localStorage.getItem("token"))
             : null;
         let config = {
-            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
+            headers: { 'Authorization': token },
         };
         // let config = {
         //     headers: {
-        //         'Authorization': token,
+        //         'Authorization': token
         //         'Content-Type': 'application/json', // Set the content type if you're sending JSON data
         //       },
         // };
@@ -107,10 +105,9 @@ export default {
             : null;
 
         let config = {
-            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
+            headers: { 'Authorization': token },
         };
 
-        console.log("this.data : " , data);
         const responce = Api.put(`${END_POINT}/UpdateVehicle`, data, config);
         return responce;
     },
@@ -121,14 +118,14 @@ export default {
             : null;
 
         let config = {
-            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
+            headers: { 'Authorization': token },
             params: {
                 Id: VehicleId
             }
         };
         //let config = {
         //    headers: {
-        //        'Authorization': token,
+        //        'Authorization': token
         //        'Content-Type': 'application/json', // Set the content type if you're sending JSON data
         //      },
         //};
@@ -142,7 +139,7 @@ export default {
             : null;
 
         let config = {
-            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
+            headers: { 'Authorization': token },
         };
 
         const responce = Api.put(`${END_POINT}/UpdateVehicleStatus`, data, config);
@@ -155,7 +152,7 @@ export default {
             : null;
 
         let config = {
-            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
+            headers: { 'Authorization': token },
         };
 
         const responce = Api.put(`${END_POINT}/UpdateVehicleImage360`, data, config);

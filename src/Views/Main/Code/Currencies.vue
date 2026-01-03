@@ -54,7 +54,7 @@ export default {
 			});
 	
 			this.GetCodesByParent({ parent1: ParentEnum.Currencies, parent2: 0 }).then(response => {
-                console.log("responce : " ,response);
+                 
 				loading.close();
 			}).catch(error => {
 				if (error.response && error.response.status === 401) {
@@ -100,7 +100,7 @@ export default {
                 });
 
                 this.UpdateCode(this.data).then(Response => {
-                    console.log(Response);
+                     
                     this.$moshaToast(this.$t('general_update_operation_success_message'), {
                         hideProgressBar: 'false',
                         showIcon: 'true',
@@ -201,7 +201,7 @@ export default {
                 });
 
                 this.CreateCode(this.data).then(Response => {
-                    console.log(Response);
+                     
                     this.$moshaToast(this.$t('general_create_operation_success_message'), {
                         hideProgressBar: 'false',
                         showIcon: 'true',
@@ -261,7 +261,7 @@ export default {
                 });
 
                 this.DeleteCode(this.data.id).then(Response => {
-                    console.log(Response);
+                     
                     this.$moshaToast(this.$t('general_delete_operation_success_message'), {
                         hideProgressBar: 'false',
                         showIcon: 'true',

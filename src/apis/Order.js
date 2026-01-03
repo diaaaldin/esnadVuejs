@@ -10,7 +10,7 @@ export default {
             ? JSON.parse(localStorage.getItem("token"))
             : null;
         let config = {
-            headers: { 'Authorization': token , "Access-Control-Allow-Origin" : "*" },
+            headers: { 'Authorization': token  },
             params: {
                 orderId: orderId,
             },
@@ -24,7 +24,7 @@ export default {
             ? JSON.parse(localStorage.getItem("token"))
             : null;
         let config = {
-            headers: { 'Authorization': token, "Access-Control-Allow-Origin" : "*"  },
+            headers: { 'Authorization': token  },
             params: {
                 vm: data.vm,
                 page: data.page,
@@ -39,7 +39,7 @@ export default {
             ? JSON.parse(localStorage.getItem("token"))
             : null;
         let config = {
-            headers: { 'Authorization': token , "Access-Control-Allow-Origin" : "*" },
+            headers: { 'Authorization': token  },
             params: {
                 orderId: orderId,
             },
@@ -52,7 +52,7 @@ export default {
             ? JSON.parse(localStorage.getItem("token"))
             : null;
         let config = {
-            headers: { 'Authorization': token  , "Access-Control-Allow-Origin" : "*" },
+            headers: { 'Authorization': token   },
             params: {
                 ...data.vm,
                 page: data.page,
@@ -81,11 +81,11 @@ export default {
             : null;
 
         let config = {
-            headers: { 'Authorization': token , "Access-Control-Allow-Origin" : "*" },
+            headers: { 'Authorization': token  },
         };
         // let config = {
         //     headers: {
-        //         'Authorization': token,
+        //         'Authorization': token
         //         'Content-Type': 'application/json', // Set the content type if you're sending JSON data
         //       },
         // };
@@ -98,11 +98,11 @@ export default {
             : null;
 
         let config = {
-            headers: { 'Authorization': token , "Access-Control-Allow-Origin" : "*" },
+            headers: { 'Authorization': token  },
         };
         // let config = {
         //     headers: {
-        //         'Authorization': token,
+        //         'Authorization': token
         //         'Content-Type': 'application/json', // Set the content type if you're sending JSON data
         //       },
         // };
@@ -115,14 +115,14 @@ export default {
             : null;
 
         let config = {
-            headers: { 'Authorization': token, "Access-Control-Allow-Origin" : "*"  },
+            headers: { 'Authorization': token  },
             params: {
                 orderId: orderId
             }
         };
         //let config = {
         //    headers: {
-        //        'Authorization': token,
+        //        'Authorization': token
         //        'Content-Type': 'application/json', // Set the content type if you're sending JSON data
         //      },
         //};
@@ -135,11 +135,11 @@ export default {
             : null;
 
         let config = {
-            headers: { 'Authorization': token , "Access-Control-Allow-Origin" : "*" },
+            headers: { 'Authorization': token  },
         };
         // let config = {
         //     headers: {
-        //         'Authorization': token,
+        //         'Authorization': token
         //         'Content-Type': 'application/json', // Set the content type if you're sending JSON data
         //       },
         // };
@@ -153,11 +153,11 @@ export default {
             : null;
 
         let config = {
-            headers: { 'Authorization': token , "Access-Control-Allow-Origin" : "*" },
+            headers: { 'Authorization': token  },
         };
         // let config = {
         //     headers: {
-        //         'Authorization': token,
+        //         'Authorization': token
         //         'Content-Type': 'application/json', // Set the content type if you're sending JSON data
         //       },
         // };
@@ -171,11 +171,11 @@ export default {
             : null;
 
         let config = {
-            headers: { 'Authorization': token , "Access-Control-Allow-Origin" : "*" },
+            headers: { 'Authorization': token  },
         };
         // let config = {
         //     headers: {
-        //         'Authorization': token,
+        //         'Authorization': token
         //         'Content-Type': 'application/json', // Set the content type if you're sending JSON data
         //       },
         // };
@@ -189,14 +189,14 @@ export default {
             : null;
 
         let config = {
-            headers: { 'Authorization': token , "Access-Control-Allow-Origin" : "*" },
+            headers: { 'Authorization': token  },
             params: {
                 orderId: orderId
             }
         };
         //let config = {
         //    headers: {
-        //        'Authorization': token,
+        //        'Authorization': token
         //        'Content-Type': 'application/json', // Set the content type if you're sending JSON data
         //      },
         //};
@@ -210,11 +210,11 @@ export default {
             : null;
 
         let config = {
-            headers: { 'Authorization': token , "Access-Control-Allow-Origin" : "*" },
+            headers: { 'Authorization': token  },
         };
         // let config = {
         //     headers: {
-        //         'Authorization': token,
+        //         'Authorization': token
         //         'Content-Type': 'application/json', // Set the content type if you're sending JSON data
         //       },
         // };

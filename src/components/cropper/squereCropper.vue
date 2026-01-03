@@ -45,7 +45,6 @@ export default {
     },
 
     closeModal(image) {
-      //console.log(image);
       this.$emit('b64image', image);
       this.$emit('IsShow', false);
       this.$emit('copperImage', this.imageCropper);
@@ -53,7 +52,6 @@ export default {
 
 
     fileChanged(e) {
-      console.log("image befor cropper : ", e);
       const files = e.target.files || e.dataTransfer.files;
       if (files.length) {
         this.selectedFile = files[0];

@@ -252,8 +252,6 @@ export default {
             };
 
             return this.GetAllIncomes(searchParams).then(response => {
-                console.log("response : ", response );
-                console.log("this.getIncomesPagination : ", this.getIncomesPagination );
             }).catch(error => {
                 if (error.response && error.response.status === 401) {
                     this.$moshaToast(this.$t('general_user_not_allow_error_message'), {
@@ -309,7 +307,7 @@ export default {
                 });
 
                 this.UpdateIncome(this.data).then(Response => {
-                    console.log(Response);
+                     
                     this.$moshaToast(this.$t('general_update_operation_success_message'), {
                         hideProgressBar: 'false',
                         showIcon: 'true',
@@ -432,7 +430,7 @@ export default {
                 });
 
                 this.CreateIncome(this.data).then(Response => {
-                    console.log(Response);
+                     
                     this.$moshaToast(this.$t('general_create_operation_success_message'), {
                         hideProgressBar: 'false',
                         showIcon: 'true',
@@ -525,7 +523,7 @@ export default {
                 });
 
                 this.DeleteIncome(this.data.id).then(Response => {
-                    console.log(Response);
+                     
                     this.$moshaToast(this.$t('general_delete_operation_success_message'), {
                         hideProgressBar: 'false',
                         showIcon: 'true',
@@ -604,7 +602,7 @@ export default {
             });
 
             this.CreateIncomesFromExcel(this.excelFile).then(Response => {
-                console.log(Response);
+                 
                 this.$moshaToast('تم رفع الملف بنجاح', {
                     hideProgressBar: 'false',
                     showIcon: 'true',

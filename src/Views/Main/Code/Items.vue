@@ -55,7 +55,7 @@ export default {
 			});
 	
 			this.GetCodesByParentWithChild({ parent1: ParentEnum.Items, parent2: 0 }).then(response => {
-                console.log("responce : " ,response);
+                 
 				loading.close();
 			}).catch(error => {
 				if (error.response && error.response.status === 401) {
@@ -103,7 +103,7 @@ export default {
                 });
 
                 this.UpdateCodeWithChild(this.data).then(Response => {
-                    console.log(Response);
+                     
                     this.$moshaToast(this.$t('general_update_operation_success_message'), {
                         hideProgressBar: 'false',
                         showIcon: 'true',
@@ -204,7 +204,7 @@ export default {
                 });
 
                 this.CreateCodeWithChild(this.data).then(Response => {
-                    console.log(Response);
+                     
                     this.$moshaToast(this.$t('general_create_operation_success_message'), {
                         hideProgressBar: 'false',
                         showIcon: 'true',
@@ -266,7 +266,7 @@ export default {
                 });
 
                 this.DeleteCode(this.data.id).then(Response => {
-                    console.log(Response);
+                     
                     this.$moshaToast(this.$t('general_delete_operation_success_message'), {
                         hideProgressBar: 'false',
                         showIcon: 'true',
