@@ -35,6 +35,9 @@ export default {
             excelProjectId: 0,
             excelExceptionPeriod: 0,
 
+            // Multi-select for bulk delete
+            selectedItems: [],
+
             // Store codes separately
             projectsList: [],
             destinationsList: [],
@@ -145,9 +148,17 @@ export default {
             return pages;
         },
 
+        isAllSelected() {
+            if (this.getPeoplePagination.data.length === 0) return false;
+            return this.getPeoplePagination.data.every(item => this.selectedItems.includes(item.id));
+        },
+
+        hasSelectedItems() {
+            return this.selectedItems.length > 0;
+        },
     },
     methods: {
-        ...mapActions("People", ["GetAllPeople", "CreatePeople", "UpdatePeople", "DeletePeople", "CreatePeopleFromExcel"]),
+        ...mapActions("People", ["GetAllPeople", "CreatePeople", "UpdatePeople", "DeletePeople", "DeleteMultiPeople", "CreatePeopleFromExcel"]),
         ...mapActions("Projects", ["GetAllProjects"]),
         ...mapActions("Code", ["GetCodesByParent"]),
 
@@ -226,6 +237,8 @@ export default {
             };
 
             return this.GetAllPeople(searchParams).then(response => {
+                // Clear selections when data changes
+                this.selectedItems = [];
             }).catch(error => {
                 if (error.response && error.response.status === 401) {
                     this.$moshaToast(this.$t('general_user_not_allow_error_message'), {
@@ -583,6 +596,82 @@ export default {
             this.pagination.page = 1;
             this.getDataFunc();
         },
+
+        // Multi-select methods
+        toggleSelectAll() {
+            if (this.isAllSelected) {
+                this.selectedItems = [];
+            } else {
+                this.selectedItems = this.getPeoplePagination.data.map(item => item.id);
+            }
+        },
+
+        toggleSelectItem(id) {
+            const index = this.selectedItems.indexOf(id);
+            if (index > -1) {
+                this.selectedItems.splice(index, 1);
+            } else {
+                this.selectedItems.push(id);
+            }
+        },
+
+        isItemSelected(id) {
+            return this.selectedItems.includes(id);
+        },
+
+        DeleteMultiFunc() {
+            if (this.selectedItems.length === 0) {
+                this.$moshaToast('يرجى اختيار عنصر واحد على الأقل للحذف', {
+                    hideProgressBar: false,
+                    position: 'top-center',
+                    showIcon: true,
+                    swipeClose: true,
+                    type: 'warning',
+                    timeout: 3000,
+                });
+                return;
+            }
+
+            const loading = ElLoading.service({
+                lock: true,
+                background: 'rgba(0, 0, 0, 0.7)',
+                text: "",
+            });
+
+            this.DeleteMultiPeople(this.selectedItems).then(Response => {
+                this.$moshaToast(`تم حذف ${this.selectedItems.length} عنصر بنجاح`, {
+                    hideProgressBar: false,
+                    showIcon: true,
+                    swipeClose: true,
+                    type: 'success',
+                    timeout: 3000,
+                });
+                loading.close();
+                this.selectedItems = [];
+                this.getDataFunc();
+            }).catch(error => {
+                if (error.response && error.response.status === 401) {
+                    this.$moshaToast(this.$t('general_user_not_allow_error_message'), {
+                        hideProgressBar: false,
+                        position: 'top-center',
+                        showIcon: true,
+                        swipeClose: true,
+                        type: 'warning',
+                        timeout: 3000,
+                    });
+                } else {
+                    this.$moshaToast(error.response?.data?.message || 'حدث خطأ أثناء حذف العناصر', {
+                        hideProgressBar: false,
+                        position: 'top-center',
+                        showIcon: true,
+                        swipeClose: true,
+                        type: 'warning',
+                        timeout: 3000,
+                    });
+                }
+                loading.close();
+            });
+        },
     }
 };
 </script>
@@ -618,10 +707,13 @@ export default {
                     </select>
                 </div>
                 <!-- Action Buttons -->
-                <div class="col-12 mt-2">
+                <div class="col-12 mt-2 d-flex align-items-center" style="gap: 5px;">
                     <a href="#add_modal" data-toggle="modal" v-on:click="clearData()"
-                        class="btn btn-primary float-left">{{ $t('general_create_button') }}</a>
-                    <a href="#excel_modal" data-toggle="modal" class="btn btn-success float-left">رفع من Excel</a>
+                        class="btn btn-primary">{{ $t('general_create_button') }}</a>
+                    <a href="#excel_modal" data-toggle="modal" class="btn btn-success">رفع من Excel</a>
+                    <button v-if="hasSelectedItems" @click="DeleteMultiFunc()" class="btn btn-danger">
+                        حذف المحدد ({{ selectedItems.length }})
+                    </button>
                 </div>
             </div>
         </div>
@@ -646,6 +738,10 @@ export default {
                         <table class="datatable table table-hover table-center mb-0">
                             <thead>
                                 <tr>
+                                    <th class="text-center" style="width: 50px;">
+                                        <input type="checkbox" :checked="isAllSelected" @change="toggleSelectAll()" 
+                                            :indeterminate="selectedItems.length > 0 && !isAllSelected">
+                                    </th>
                                     <th class="text-center">ID</th>
                                     <th class="text-center">الاسم</th>
                                     <th class="text-center">رقم الهوية</th>
@@ -658,6 +754,10 @@ export default {
                             </thead>
                             <tbody>
                                 <tr v-for="(item, index) in getPeoplePagination.data" :key="item.id">
+                                    <td class="text-center">
+                                        <input type="checkbox" :checked="isItemSelected(item.id)" 
+                                            @change="toggleSelectItem(item.id)">
+                                    </td>
                                     <td class="text-center">{{ (currentPage - 1) * pagination.pageSize + index + 1 }}
                                     </td>
                                     <td class="text-center">{{ item.name || '-' }}</td>

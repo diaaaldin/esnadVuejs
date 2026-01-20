@@ -743,10 +743,10 @@ export default {
                     <input v-model="dataSearch.searchText" type="text" class="form-control" @input="searchFunc()" placeholder="بحث...">
                 </div> -->
                 <!-- Action Buttons -->
-                <div class="col-12 mt-2">
+                <div class="col-12 mt-2 d-flex align-items-center" style="gap: 5px;">
                     <a href="#add_modal" data-toggle="modal" v-on:click="clearData()"
-                        class="btn btn-primary float-left">{{ $t('general_create_button') }}</a>
-                    <a href="#excel_modal" data-toggle="modal" class="btn btn-success float-left">رفع من Excel</a>
+                        class="btn btn-primary">{{ $t('general_create_button') }}</a>
+                    <a href="#excel_modal" data-toggle="modal" class="btn btn-success">رفع من Excel</a>
                 </div>
             </div>
         </div>

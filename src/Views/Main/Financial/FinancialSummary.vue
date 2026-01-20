@@ -395,6 +395,8 @@ export default {
                         <option value="0">-- إختر النوع --</option>
                         <option value="1">وارد</option>
                         <option value="2">صادر</option>
+                        <option value="3">صادر فقط</option>
+                        <option value="4">مصاريف تشغيلية</option>
                     </select>
                 </div>
                 <div class="col-12 col-sm-6 col-md-3 mb-2">

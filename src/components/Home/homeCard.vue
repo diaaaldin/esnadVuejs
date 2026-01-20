@@ -6,6 +6,8 @@ export default {
     data() {
 		return {	
             selectedTeamId: 0,
+            fromDate: "",
+            toDate: "",
             StatisticsData : {
                 totalProject: 0,
                 totalFunder: 0,
@@ -80,11 +82,22 @@ export default {
 			this.statisticsFunc();
 		},
 
+		onDateChange() {
+			// Reload statistics when dates change
+			this.statisticsFunc();
+		},
+
         statisticsFunc(){
             // Use currentTeamId (selectedTeamId for admin, userTeamId for non-admin)
             const teamId = this.currentTeamId || 0;
+            const fromDate = this.fromDate || null;
+            const toDate = this.toDate || null;
             
-            this.HomeStatisticsInfo(teamId).then(Response => {
+            this.HomeStatisticsInfo({ 
+                teamId: teamId, 
+                fromDate: fromDate, 
+                toDate: toDate 
+            }).then(Response => {
 				this.StatisticsData.totalProject = Response.totalProject || 0;
 				this.StatisticsData.totalFunder = Response.totalFunder || 0;
 				this.StatisticsData.totalPeopleThisMonth = Response.totalPeopleThisMonth || 0;
@@ -108,17 +121,27 @@ export default {
 </script>
 <template>
      <div class="row">
-                    <!-- Team Select (Admin Only) -->
-                    <div class="col-12 mb-3" v-if="isAdmin">
+                    <!-- Filters Card (Team for Admin, Dates for All) -->
+                    <div class="col-12 mb-3">
                         <div class="card">
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-md-4">
+                                    <!-- Team Select (Admin Only) -->
+                                    <div class="col-md-4" v-if="isAdmin">
                                         <label>الفريق</label>
                                         <select v-model="selectedTeamId" class="form-control" @change="onTeamChange()">
                                             <option value="0">-- إختر فريق --</option>
                                             <option v-for="team in getTeamsData" :key="team.id" :value="team.id">{{ team.name }}</option>
                                         </select>
+                                    </div>
+                                    <!-- Date Filters (Always Visible) -->
+                                    <div class="col-md-4">
+                                        <label>من تاريخ</label>
+                                        <input v-model="fromDate" type="date" class="form-control" @change="onDateChange()">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label>إلى تاريخ</label>
+                                        <input v-model="toDate" type="date" class="form-control" @change="onDateChange()">
                                     </div>
                                 </div>
                             </div>

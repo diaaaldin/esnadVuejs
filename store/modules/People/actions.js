@@ -61,6 +61,14 @@ export const DeletePeople = ({ commit, dispatch }, id) => {
     });
 }
 
+export const DeleteMultiPeople = ({ commit, dispatch }, ids) => {
+    return People.DeleteMultiPeople(ids).then(function (response) {
+        return response.data.data;
+    }).catch(function (error) {
+        throw error;
+    });
+}
+
 export const CreatePeopleFromExcel = ({ commit, dispatch }, { file, projectId, exceptionPeriod }) => {
     return People.CreatePeopleFromExcel(file, projectId, exceptionPeriod).then(function (response) {
         const contentType = response.headers['content-type'] || '';

@@ -595,6 +595,18 @@ export default {
 			this.updateIsIndeterminateStates = {};
 		},
 
+		// Get sorted permissions for a module
+		getSortedPermissions(modulePermissions) {
+			if (!modulePermissions || !Array.isArray(modulePermissions)) {
+				return [];
+			}
+			return [...modulePermissions].sort((a, b) => {
+				const titleA = (a.title || '').toLowerCase();
+				const titleB = (b.title || '').toLowerCase();
+				return titleA.localeCompare(titleB);
+			});
+		},
+
 		////////////////////////
 		// checkbox method start
 		handleCheckAllModuleChange(moduleId) {
@@ -914,7 +926,7 @@ export default {
 
 							<div v-for="item in getUserPermissionsData" :key="item.moduleId">
 								<div class="col-6 mt-3">
-									<el-checkbox style="color: #e5008f; font-weight: bold;"
+									<el-checkbox style="color: #057789; font-weight: bold;"
 										v-model="checkModulePerAll[item.moduleId]"
 										:indeterminate="isIndeterminateStates[item.moduleId]"
 										@change="handleCheckAllModuleChange(item.moduleId)">
@@ -923,9 +935,13 @@ export default {
 								</div>
 								<div class="col-6 ml-4">
 									<el-checkbox-group v-model="checkedPermissions"
-										@change="handleCheckedPermissionsChange(item.moduleId)">
-										<el-checkbox v-for="per in item.modulePermissions" :key="per.id"
-											:label="per.id">
+										@change="handleCheckedPermissionsChange(item.moduleId)"
+										class="permissions-checkbox-group">
+										<el-checkbox 
+											v-for="per in getSortedPermissions(item.modulePermissions)" 
+											:key="per.id"
+											:label="per.id"
+											class="permission-checkbox-item">
 											{{ per.title }}
 										</el-checkbox>
 									</el-checkbox-group>
@@ -1014,7 +1030,7 @@ export default {
 
 							<div v-for="item in getUserPermissionsData" :key="item.moduleId">
 								<div class="col-6 mt-3">
-									<el-checkbox style="color: #e5008f; font-weight: bold;"
+									<el-checkbox style="color: #057789; font-weight: bold;"
 										v-model="updateCheckModulePerAll[item.moduleId]"
 										:indeterminate="updateIsIndeterminateStates[item.moduleId]"
 										@change="handleCheckAllModuleChangeUpdate(item.moduleId)">
@@ -1023,13 +1039,15 @@ export default {
 								</div>
 								<div class="col-6 ml-4">
 									<el-checkbox-group v-model="updateCheckedPermissions"
-										@change="handleCheckedPermissionsChangeUpdate(item.moduleId)">
-										<div class="">
-											<el-checkbox v-for="per in item.modulePermissions" :key="per.id"
-												:label="per.id">
-												{{ per.title }}
-											</el-checkbox>
-										</div>
+										@change="handleCheckedPermissionsChangeUpdate(item.moduleId)"
+										class="permissions-checkbox-group">
+										<el-checkbox 
+											v-for="per in getSortedPermissions(item.modulePermissions)" 
+											:key="per.id"
+											:label="per.id"
+											class="permission-checkbox-item">
+											{{ per.title }}
+										</el-checkbox>
 									</el-checkbox-group>
 								</div>
 							</div>
@@ -1087,7 +1105,7 @@ export default {
 
 							<div v-for="item in getUserPermissionsData" :key="item.moduleId">
 								<div class="col-6 mt-3">
-									<el-checkbox style="color: #e5008f; font-weight: bold;"
+									<el-checkbox style="color: #057789; font-weight: bold;"
 										v-model="updateCheckModulePerAll[item.moduleId]"
 										:indeterminate="updateIsIndeterminateStates[item.moduleId]"
 										@change="handleCheckAllModuleChangeUpdate(item.moduleId)">
@@ -1097,18 +1115,20 @@ export default {
 
 								<div class="col-6 ml-4">
 									<el-checkbox-group v-model="updateCheckedPermissions"
-										@change="handleCheckedPermissionsChangeUpdate(item.moduleId)">
-										<div class="">
-											<el-checkbox v-for="per in item.modulePermissions" :key="per.id"
-												:label="per.id">
-												{{ per.title }}
-											</el-checkbox>
-										</div>
-
+										@change="handleCheckedPermissionsChangeUpdate(item.moduleId)"
+										class="permissions-checkbox-group">
+										<el-checkbox 
+											v-for="per in getSortedPermissions(item.modulePermissions)" 
+											:key="per.id"
+											:label="per.id"
+											class="permission-checkbox-item">
+											{{ per.title }}
+										</el-checkbox>
 									</el-checkbox-group>
 								</div>
 
 							</div>
+							
 						</div>
 						<button v-on:click="UpdatePermissionsFunc()" class="btn btn-primary btn-block">Save</button>
 					</div>
@@ -1160,5 +1180,56 @@ export default {
 
 .modal-body button {
 	margin: 5px;
+}
+
+/* Permissions checkbox group styling */
+.permissions-checkbox-group {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: flex-start;
+	align-items: center;
+	gap: 12px 16px;
+	padding: 8px 0;
+}
+
+.permission-checkbox-item {
+	margin: 0;
+	flex: 0 0 auto;
+	min-width: 140px;
+}
+
+.permission-checkbox-item :deep(.el-checkbox__label) {
+	font-size: 14px;
+	color: #333;
+	padding-right: 8px;
+	white-space: nowrap;
+}
+
+.permission-checkbox-item :deep(.el-checkbox__input.is-checked .el-checkbox__inner) {
+	background-color: #057789;
+	border-color: #057789;
+}
+
+.permission-checkbox-item :deep(.el-checkbox__input.is-checked + .el-checkbox__label) {
+	color: #057789;
+}
+
+/* Center alignment when wrapping to multiple lines */
+@media (min-width: 768px) {
+	.permissions-checkbox-group {
+		justify-content: center;
+	}
+}
+
+/* Responsive adjustments */
+@media (max-width: 767px) {
+	.permission-checkbox-item {
+		min-width: 120px;
+		flex: 1 1 auto;
+	}
+	
+	.permissions-checkbox-group {
+		justify-content: flex-start;
+	}
 }
 </style>

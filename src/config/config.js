@@ -11,7 +11,7 @@ export const socialUrlData = {
 
 export const Urls = {
   // cpSite: 'https://localhost:44350',
-  cpSite : 'https://cp.esnad.cloud',
+  cpSite: 'https://cp.esnad.cloud',
   //cpSite : 'http://localhost:4000',
 };
 
@@ -32,9 +32,9 @@ export const ParentEnum = {
 
 export const FundWaysEnum =
 {
-    FundWays : 7,
-    Cash : 49,
-    Wallet : 50,
+  FundWays: 7,
+  Cash: 49,
+  Wallet: 50,
 }
 
 export const UserTypeEnum = {

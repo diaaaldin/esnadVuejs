@@ -836,7 +836,7 @@ export default {
 
 							<!-- <div v-for="item in getUserPermissionsData" :key="item.moduleId">
 								<div class="col-6 mt-3">
-									<el-checkbox style="color: #e5008f; font-weight: bold;"
+									<el-checkbox style="color: #057789; font-weight: bold;"
 										v-model="checkModulePerAll[item.moduleId]"
 										:indeterminate="isIndeterminateStates[item.moduleId]"
 										@change="handleCheckAllModuleChange(item.moduleId)">
@@ -970,7 +970,7 @@ export default {
 
 							<div v-for="item in getUserPermissionsData" :key="item.moduleId">
 								<div class="col-6 mt-3">
-									<el-checkbox style="color: #e5008f; font-weight: bold;"
+									<el-checkbox style="color: #057789; font-weight: bold;"
 										v-model="updateCheckModulePerAll[item.moduleId]"
 										:indeterminate="updateIsIndeterminateStates[item.moduleId]"
 										@change="handleCheckAllModuleChangeUpdate(item.moduleId)">

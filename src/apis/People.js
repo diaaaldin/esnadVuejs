@@ -69,6 +69,23 @@ export default {
         return responce;
     },
 
+    DeleteMultiPeople(ids) {
+        let token = localStorage.getItem("token")
+            ? JSON.parse(localStorage.getItem("token"))
+            : null;
+
+        let config = {
+            headers: { 
+                'Authorization': token,
+                'Content-Type': 'application/json'
+            },
+            data: ids  // Send array directly in request body
+        };
+
+        const responce = Api.delete(`${END_POINT}/DeleteMultiPeople`, config);
+        return responce;
+    },
+
     CreatePeopleFromExcel(file, projectId, exceptionPeriod) {
         let token = localStorage.getItem("token")
             ? JSON.parse(localStorage.getItem("token"))

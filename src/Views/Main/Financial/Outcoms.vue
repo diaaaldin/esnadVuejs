@@ -585,7 +585,9 @@ export default {
 
         selectItem(id) {
             this.clearData();
+            
             const foundItem = this.getOutcomesPagination.data.find(element => element.id === id);
+            console.log("foundItem : ", foundItem);
             if (foundItem) {
                 this.data.id = foundItem.id;
                 // Get teamId from wallet
@@ -602,6 +604,7 @@ export default {
                 this.data.photographedByCFK = foundItem.photographedByCFK || 0;
                 this.data.date = foundItem.date ? foundItem.date.split('T')[0] : new Date().toISOString().split('T')[0];
                 this.data.note = foundItem.note || "";
+              
                 // Handle running cost - only populate if it exists
                 if (foundItem.runningCostAmount > 0 || (foundItem.runningCostWallet && foundItem.runningCostWallet.trim() !== '')) {
                     // Outcome has running cost, don't populate runningCost fields
@@ -610,7 +613,7 @@ export default {
                         outcomeId: 0,
                         amount: 0,
                         walletId: 0,
-                        note: "",
+                        note: foundItem.runningCostNote || "",
                     };
                 } else {
                     // Outcome doesn't have running cost, initialize empty
@@ -619,7 +622,7 @@ export default {
                         outcomeId: 0,
                         amount: 0,
                         walletId: 0,
-                        note: "",
+                        note: foundItem.runningCostNote || "",
                     };
                 }
                 // Load wallets for the selected team
@@ -951,11 +954,11 @@ export default {
                     <input v-model="dataSearch.searchText" type="text" class="form-control" @input="searchFunc()" placeholder="بحث...">
                 </div> -->
                 <!-- Action Buttons -->
-                <div class="col-12 mt-2">
+                <div class="col-12 mt-2 d-flex align-items-center" style="gap: 5px;">
                     <a href="#add_modal" data-toggle="modal" v-on:click="clearData()"
-                        class="btn btn-primary float-left mr-3">{{ $t('general_create_button') }}</a>
-                    <a href="#excel_modal" data-toggle="modal" class="btn btn-success float-left mr-3">رفع من Excel</a>
-                    <button v-if="hasSelectedItems" @click="DeleteMultiFunc()" class="btn btn-danger float-left">
+                        class="btn btn-primary">{{ $t('general_create_button') }}</a>
+                    <a href="#excel_modal" data-toggle="modal" class="btn btn-success">رفع من Excel</a>
+                    <button v-if="hasSelectedItems" @click="DeleteMultiFunc()" class="btn btn-danger">
                         حذف المحدد ({{ selectedItems.length }})
                     </button>
                 </div>
@@ -1187,13 +1190,13 @@ export default {
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-12">
+                            </template>
+                            <div class="col-12">
                                     <div class="form-group">
-                                        <label>ملاحظات</label>
+                                        <label>ملاحظات المصاريف التشغيلية</label>
                                         <textarea v-model="data.runningCost.note" type="text" class="form-control" maxlength="255"></textarea>
                                     </div>
-                                </div>
-                            </template>
+                            </div>
                          
                         </div>
                         <button v-on:click="UpdateFunc()" class="btn btn-primary btn-block">{{ $t('general_save_button')
